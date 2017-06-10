@@ -3,13 +3,136 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </head>
 <body>
 
-<h1>Testing</h1>
+<!--<h1>Testing</h1>
 <p>IP WS: {{IP|default:'No se encontro ip'}}</p>
-<p id="userIp">IP US: </p>
+<p id="userIp">IP US: </p>-->
+
+<div class="container-fluid">
+    <div class="row">
+          <center><h2>ISP finder Project</h2></center>
+    </div>
+    <div class="row">
+        <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li class="active">
+                  <a data-toggle="tab" href="#consult">
+                      <span class="round-tabs two">
+                          <i class="glyphicon glyphicon-search"></i>
+                    </span>Consultar ISP
+                  </a>
+              </li>
+              <li>
+                  <a data-toggle="tab" href="#mapa">
+                    <span class="round-tabs two">
+                          <i class="glyphicon glyphicon-globe"></i>
+                    </span>Mapa
+                  </a>
+              </li>
+              <li>
+                  <a data-toggle="tab" href="#info">
+                      <span class="round-tabs two">
+                          <i class="glyphicon glyphicon-book"></i>
+                      </span>
+                      Informaci&oacute;n
+                  </a>
+              </li>
+        </ul>
+
+        <div class="tab-content">
+          <div id="consult" class="tab-pane fade in active">
+              <form action=""><br>
+                <div class="container">
+                    <div class="row">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">ISP</h3>
+                            </div>
+                            <div class="panel-body">
+                                Nombre del ISP
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Pais</h3>
+                            </div>
+                            <div class="panel-body">
+                                Ecuador
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Ciudad</h3>
+                            </div>
+                            <div class="panel-body">
+                                Guayaquil
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">latitud/longitud</h3>
+                            </div>
+                            <div class="panel-body">
+                                latitud/longitud
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <button type="submit" class="btn btn-primary">Compartir</button>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                              <input type="text" class="form-control" placeholder="Ingresar ISP...">
+                              <span class="input-group-btn">
+                                <button class="btn btn-default" type="submit">Ok</button>
+                              </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               </form>
+          </div>
+          <div id="mapa" class="tab-pane fade">
+              <center>
+                <div class="container">
+                    <div class="row">
+                        <div class="text-center" id="map" style="width:400px;height:400px;margin: auto;"></div>
+                    </div>
+                </div>
+              </center>
+          </div>
+          <div id="info" class="tab-pane fade">
+             <div class="panel panel-default">
+              <div class="panel-body">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores ducimus eius ex laborum odio quam recusandae sequi vitae! Aliquid ipsam nisi nostrum nulla odio quae qui saepe sint ullam veniam.
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+<script>
+    function myMap() {
+    var mapOptions = {
+        center: new google.maps.LatLng(51.5, -0.12),
+        zoom: 10,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+    var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCISkw1JtoXe-g3_IKP3iHS_TjHvtaKAQw&callback=myMap"></script>
 <script>
 function getIP(json) {
 	$('#userIp').html("IP US: " + json.ip);
@@ -21,6 +144,7 @@ $(document).ready(function(){
 	}, "jsonp");
 });
 </script>
+
 <script type="application/javascript" src="https://api.ipify.org?format=jsonp&callback=getIP"></script>
 </body>
 </html>
