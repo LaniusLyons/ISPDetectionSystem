@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+
+<h1>Testing</h1>
+<p>IP WS: {{IP|default:'No se encontro ip'}}</p>
+<p id="userIp">IP US: </p>
+<script>
+function getIP(json) {
+	$('#userIp').html("IP US: " + json.ip);
+}
+
+$(document).ready(function(){
+	$.get("http://ipinfo.io", function(response) {
+	    console.log(response.ip);
+	}, "jsonp");
+});
+</script>
+<script type="application/javascript" src="https://api.ipify.org?format=jsonp&callback=getIP"></script>
+</body>
+</html>
