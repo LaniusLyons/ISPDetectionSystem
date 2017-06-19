@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2XDKonqjSaAaVAeWqnLX5JdVwBQi-Gsg&amp;libraries=places,geometry&amp;region=ec&amp;language=es"></script>
 </head>
 <body>
 
@@ -13,9 +14,9 @@
 <p>IP WS: {{IP|default:'No se encontro ip'}}</p>
 <p id="userIp">IP US: </p>-->
 
-<div class="container-fluid">
+<div class="container">
     <div class="row">
-          <center><h2>ISP finder Project</h2></center>
+          <h2 style="text-align:center;">ISP finder Project</h2>
     </div>
     <div class="row">
         <ul class="nav nav-tabs nav-justified" role="tablist">
@@ -48,70 +49,27 @@
               <form action=""><br>
                 <div class="container">
                     <div class="row">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">ISP</h3>
-                            </div>
-                            <div class="panel-body">
-                                Nombre del ISP
-                            </div>
+                        <div class="col-sm-6 col-xs-12">
+                            <div id="map-info" style="width:100%;height:400px;></div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">Pais</h3>
-                            </div>
-                            <div class="panel-body">
-                                Ecuador
-                            </div>
+                        <div class="col-sm-6 col-xs-12">
+
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">Ciudad</h3>
-                            </div>
-                            <div class="panel-body">
-                                Guayaquil
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">latitud/longitud</h3>
-                            </div>
-                            <div class="panel-body">
-                                latitud/longitud
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <button type="submit" class="btn btn-primary">Compartir</button>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="input-group">
-                              <input type="text" class="form-control" placeholder="Ingresar ISP...">
-                              <span class="input-group-btn">
-                                <button class="btn btn-default" type="submit">Ok</button>
-                              </span>
-                            </div>
-                        </div>
                     </div>
                 </div>
-               </form>
+              </form>
           </div>
-          <div id="mapa" class="tab-pane fade">
-              <center>
-                <div class="container">
-                    <div class="row">
-                        <div class="text-center" id="map" style="width:400px;height:400px;margin: auto;"></div>
-                    </div>
-                </div>
-              </center>
+        </div>
+
+          <div id="mapa" class="container tab-pane fade">
+              <div class="row">
+                    <div id="map" style="width:100%;height:400px;"></div>
+              </div>
           </div>
+
           <div id="info" class="tab-pane fade">
              <div class="panel panel-default">
               <div class="panel-body">
@@ -119,20 +77,97 @@
               </div>
             </div>
           </div>
+
         </div>
     </div>
 </div>
 <script>
-    function myMap() {
-    var mapOptions = {
-        center: new google.maps.LatLng(51.5, -0.12),
-        zoom: 10,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-    }
-    var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-    }
+        var map, infoWindow;
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map-info'), {
+          center: {lat: -34.397, lng: 150.644},
+          zoom: 6
+        });
+        infoWindow = new google.maps.InfoWindow;
+
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+
+            infoWindow.setPosition(pos);
+            infoWindow.setContent('Location found.');
+            infoWindow.open(map);
+            map.setCenter(pos);
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
+      }
+
+      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+                              'Error: The Geolocation service failed.' :
+                              'Error: Your browser doesn\'t support geolocation.');
+        infoWindow.open(map);
+      }
+      google.maps.event.addDomListener(window, 'load', initMap);
+        /*var mapa;
+        var directionDisplay;
+        function initialize()
+        {
+            if (navigator.geolocation)
+            {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            }else
+            {
+                //Browser no soporta geolocation
+                alert('Tu navegador no soporta la geolocalizacion o lo tienes desactivado');
+            }
+        }
+
+        function showPosition(position){
+            // Create a Google coordinate object for where to center the map
+            var latlng = new google.maps.LatLng( position.coords.latitude, position.coords.longitude );
+            var myOptions = {
+              zoom:5,
+              mapTypeId: google.maps.MapTypeId.ROADMAP,
+              center: latlng
+            };
+            mapa = new google.maps.Map(document.getElementById("map"), myOptions);
+            var marker = new google.maps.Marker( {
+                position: latlng,
+                map: mapa,
+                icon: 'http://m.schuepfen.ch/icons/helveticons/black/60/Pin-location.png'
+            });
+        }
+
+        function showError(error) {
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    alert("El requerimiento negado por el usuario");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    alert("Informacion de localizacion no disponible");
+                    break;
+                case error.TIMEOUT:
+                    alert("Tiempo de espera expirado");
+                    break;
+                case error.UNKNOWN_ERROR:
+                    alert("ERROR DESCONOCIDO");
+                    break;
+            }
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);*/
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCISkw1JtoXe-g3_IKP3iHS_TjHvtaKAQw&callback=myMap"></script>
 <script>
 function getIP(json) {
 	$('#userIp').html("IP US: " + json.ip);
@@ -141,6 +176,7 @@ function getIP(json) {
 $(document).ready(function(){
 	$.get("http://ipinfo.io", function(response) {
 	    console.log(response.ip);
+	    $('.ip-isp').text(response.ip);
 	}, "jsonp");
 });
 </script>
