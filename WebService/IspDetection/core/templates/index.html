@@ -8,7 +8,14 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </head>
 <body>
-
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v2.9";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 <!--<h1>Testing</h1>
 <p>IP WS: {{IP|default:'No se encontro ip'}}</p>
 <p id="userIp">IP US: </p>-->
@@ -89,14 +96,20 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-6">
-                            <button type="submit" class="btn btn-primary">Compartir</button>
+                                <p>{{ user.is_authenticated }}</p>
+                                <p>{{ user }}</p>
+                                {% if user.is_authenticated %}
+                                  <p>{{ user.username }}</p>
+                                  <button type="submit" class="btn btn-primary">Compartir</button>
+                                {% else %}
+                                    <a href="{% url 'social:begin' 'facebook' %}">Enviar con Facebook</a>
+                                    <div class="fb-login-button" data-max-rows="1" data-size="medium" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div>
+                                    <fb:login-button scope="public_profile,email"></fb:login-button>
+                                {% endif %}
                         </div>
                         <div class="col-lg-6">
                             <div class="input-group">
                               <input type="text" class="form-control" placeholder="Ingresar ISP...">
-                              <span class="input-group-btn">
-                                <button class="btn btn-default" type="submit">Ok</button>
-                              </span>
                             </div>
                         </div>
                     </div>

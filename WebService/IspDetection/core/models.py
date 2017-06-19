@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.contrib.auth.models import User
 from django.db import models
 import hashlib
 import random
@@ -56,8 +57,7 @@ class IP_Provider(models.Model):
 
 
 
-class Collaborator(models.Model):
-	id = models.AutoField(primary_key=True)
+class Collaborator(User):
 	slug = models.SlugField(unique=True,blank=True,null=True,default=generate_slug)
 
 	class Meta:
@@ -66,7 +66,7 @@ class Collaborator(models.Model):
 		db_table = 'Collaborator'
 
 	def __unicode__(self):
-		return self.slug
+		return self.username
 
 
 
