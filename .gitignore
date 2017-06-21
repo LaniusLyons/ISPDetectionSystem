@@ -1,1 +1,6 @@
 /WebService/IspDetection/core/migrations
+WebService/IspDetection/ispfinder_env/*
+WebService/IspDetection/core/migrations/*
+WebService/IspDetection/api/migrations/*
+WebService/IspDetection/core/*pyc
+WebService/IspDetection/api/*pyc

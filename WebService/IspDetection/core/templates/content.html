@@ -1,0 +1,54 @@
+<div class="container">
+    <div class="row">
+          <div class="col-sm-6 col-xs-12">
+               <div id="map-info" style="width:100%;height:400px;"></div>
+          </div>
+          <div class="col-sm-6 col-xs-12">
+               <br>
+               <div class="panel panel-primary">
+                     <div class="panel-heading">
+                           <h3 class="panel-title">ISP</h3>
+                     </div>
+                     <div class="panel-body">Nombre del ISP</div>
+               </div>
+
+               <div class="panel panel-primary">
+                     <div class="panel-heading">
+                         <h3 class="panel-title">Ciudad</h3>
+                     </div>
+                     <div class="panel-body">Guayaquil</div>
+               </div>
+
+               <div class="panel panel-primary">
+                     <div class="panel-heading">
+                         <h3 class="panel-title">latitud/longitud</h3>
+                     </div>
+                     <div id="latitud-longitud" class="panel-body"></div>
+               </div>
+
+               <div class="row">
+                    <div class="col-sm-12">
+                         <div class="input-group">
+                              <input type="text" class="form-control" placeholder="Ingresar ISP...">
+                              <span class="input-group-btn">
+                                  <button class="btn btn-primary" type="button">Guardar</button>
+                              </span>
+                         </div>
+                    </div>
+
+                    <div class="col-sm-12"><br>
+                         <!--<p>{{ user.is_authenticated }}</p>
+                         <p>{{ user }}</p>-->
+                         {% if user.is_authenticated %}
+                              <p>{{ user.username }}</p>
+                              <button type="submit" class="btn btn-primary">Compartir</button>
+                         {% else %}
+                              <a class="btn btn-default" role="button" href="{% url 'social:begin' 'facebook' %}">Enviar con Facebook</a>
+                              <div class="fb-login-button" data-max-rows="1" data-size="medium" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div>
+                                    <fb:login-button scope="public_profile,email"></fb:login-button>
+                         {% endif %}
+                    </div>
+               </div>
+          </div>
+    </div>
+</div>
