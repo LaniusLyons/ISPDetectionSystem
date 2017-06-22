@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'core',
 	'api',
     'social_django',
+    'netaddr',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -142,16 +143,16 @@ TASTYPIE_DEFAULT_FORMATS = ['json']
 
 
 AUTHENTICATION_BACKENDS = (
-        'social.backends.facebook.FacebookAppOAuth2',
-        'social.backends.facebook.FacebookOAuth2',
+        'social_core.backends.facebook.FacebookAppOAuth2',
+        'social_core.backends.facebook.FacebookOAuth2',
         'django.contrib.auth.backends.ModelBackend',
     )
 
-LOGIN_URL = 'login'
-LOGOUT_URL = 'logout'
-LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/login/'
+LOGOUT_URL = '/logout/'
+LOGIN_REDIRECT_URL = '/login/'
 
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/login/'
 SOCIAL_AUTH_USER_MODEL = 'core.Collaborator'
 SOCIAL_AUTH_FACEBOOK_KEY = '839343722883925'
 SOCIAL_AUTH_FACEBOOK_SECRET = '1a75b65ab1a77c7369c5d6b8b8874fb6'
@@ -167,10 +168,11 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
     'social_core.pipeline.social_auth.social_uid',
     'social_core.pipeline.social_auth.auth_allowed',
-    'social_core.pipeline.user.create_user',
     'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.create_user',
     'social_core.pipeline.social_auth.associate_user',
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
+    'social_core.pipeline.social_auth.associate_by_email',
     #'core.pipelines.user_details',
 )

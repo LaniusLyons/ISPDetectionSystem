@@ -4,7 +4,7 @@ from .models import *
 
 # Register your models here.
 
-admin.site.unregister(User)
+#admin.site.unregister(User)
 admin.site.register(Provider)
 admin.site.register(IP_Provider)
 admin.site.register(Collaborator)

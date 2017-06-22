@@ -13,7 +13,7 @@
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) return;
   js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v2.9";
+  js.src = "//connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v2.9&appId=839343722883925";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
 <!--<h1>Testing</h1>
@@ -55,44 +55,32 @@
               <form action=""><br>
                 <div class="container">
                     <div class="row">
-                        <div class="panel panel-primary">
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                    </div>
+                    <div class="col-md-8 col-sm-8 col-xs-12">
+                          <div class="panel panel-primary">
                             <div class="panel-heading">
-                                <h3 class="panel-title">ISP</h3>
+                                <h3 class="panel-title">TU RED THE WIFI LOCAL</h3>
                             </div>
                             <div class="panel-body">
-                                Nombre del ISP
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                  <label>Proveedor</label> {{ isp_name|default:'TU Proveedor'}}
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                  <label>IP</label> {{ isp_ip|default:'Desconocido'}}
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                  <label>Pa&iacute;s</label> {{ isp_country|default:'Desconocido'}}
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                  <label>Ciudad</label> {{ isp_city|default:'Desconocido'}}
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                  <label>latitud/longitud</label> {{ isp_coor|default:'Desconocido'}}
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">Pais</h3>
-                            </div>
-                            <div class="panel-body">
-                                Ecuador
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">Ciudad</h3>
-                            </div>
-                            <div class="panel-body">
-                                Guayaquil
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">latitud/longitud</h3>
-                            </div>
-                            <div class="panel-body">
-                                latitud/longitud
-                            </div>
-                        </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-6">
@@ -100,11 +88,11 @@
                                 <p>{{ user }}</p>
                                 {% if user.is_authenticated %}
                                   <p>{{ user.username }}</p>
-                                  <button type="submit" class="btn btn-primary">Compartir</button>
+                                  <a href="{% url 'logout' %}">Logout</a>
                                 {% else %}
                                     <a href="{% url 'social:begin' 'facebook' %}">Enviar con Facebook</a>
+                                    <br>
                                     <div class="fb-login-button" data-max-rows="1" data-size="medium" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div>
-                                    <fb:login-button scope="public_profile,email"></fb:login-button>
                                 {% endif %}
                         </div>
                         <div class="col-lg-6">
