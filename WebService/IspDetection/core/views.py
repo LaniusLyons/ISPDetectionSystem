@@ -6,7 +6,6 @@ from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.conf import settings
 from .models import *
 from datetime import datetime
-from social_django.models import UserSocialAuth
 from netaddr import *
 
 

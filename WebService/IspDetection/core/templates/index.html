@@ -56,6 +56,7 @@
                 <div class="container">
                     <div class="row">
                     <div class="col-md-4 col-sm-4 col-xs-12">
+                      <div class="text-center" id="map" style="width:300px;height:300px;margin: auto;"></div>
                     </div>
                     <div class="col-md-8 col-sm-8 col-xs-12">
                           <div class="panel panel-primary">
@@ -108,7 +109,7 @@
               <center>
                 <div class="container">
                     <div class="row">
-                        <div class="text-center" id="map" style="width:400px;height:400px;margin: auto;"></div>
+                        <div class="text-center" id="map2" style="width:400px;height:400px;margin: auto;"></div>
                     </div>
                 </div>
               </center>
@@ -124,13 +125,14 @@
     </div>
 </div>
 <script>
+var map;
     function myMap() {
     var mapOptions = {
-        center: new google.maps.LatLng(51.5, -0.12),
+        center: new google.maps.LatLng(-2.1597157,-79.8145326),
         zoom: 10,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     }
-    var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+    map = new google.maps.Map(document.getElementById("map"), mapOptions);
     }
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCISkw1JtoXe-g3_IKP3iHS_TjHvtaKAQw&callback=myMap"></script>
@@ -143,9 +145,31 @@ $(document).ready(function(){
 	$.get("http://ipinfo.io", function(response) {
 	    console.log(response.ip);
 	}, "jsonp");
+
+
+  function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.watchPosition(showPosition);
+    } else { 
+        x.innerHTML = "Geolocation is not supported by this browser.";}
+    }
+    
+  function showPosition(position) {
+      var lat = position.coords.latitude;
+      var long = position.coords.longitude;
+
+      var marker = new google.maps.Marker({
+            position: {lat: lat, lng: long},
+            map: map,
+            title: 'Hello World!'
+      });
+      map.setCenter(new google.maps.LatLng(lat,long));
+      map.setZoom(12);
+  }
+
+  getLocation();
 });
 </script>
-
 <script type="application/javascript" src="https://api.ipify.org?format=jsonp&callback=getIP"></script>
 </body>
 </html>
