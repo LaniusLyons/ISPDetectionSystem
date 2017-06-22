@@ -3,25 +3,52 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<script type="text/javascript" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+
 </head>
 <body>
 <div class="container-fluid">
-    <div class="row">
-          <center><h2>ISPFinder-Project</h2></center>
-          <center><h2>Request Logs</h2></center>
-    </div>
-    <div class="row">
-       <div class="col-md-12 col-sm-12 col-xs-12">
-	       <div class="col-md-offset-1 col-sm-offset-1 col-md-11 col-sm-11 col-xs-12">
-	       	{% for entry in logs %}
-	       		<p style="font-size: 140%;">{{ entry }}</p>
-	       	{% endfor %}
-	       </div>
-       </div>
-    </div>
+	<div class="row">
+		  <center><h2>ISPFinder-Project</h2></center>
+		  <center><h2>Request Logs</h2></center>
+	</div>
+	<div class="row">
+	   <div class="col-md-12 col-sm-12 col-xs-12">
+		   <div class="col-md-offset-1 col-sm-offset-1 col-md-11 col-sm-11 col-xs-12">
+		   <table id="myTable">
+		    <thead>
+		        <tr>
+		            <th></th>
+		        </tr>
+		    </thead>
+		   <tbody>
+		   		{% for entry in logs %}
+				<tr>
+					<td><p style="font-size: 140%;">{{ entry }}</p></td>
+				</tr>
+				{% endfor %}
+		   </tbody>
+			</table>
+		   </div>
+	   </div>
+	</div>
 </div>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#myTable").DataTable({
+			"language": {
+	            "lengthMenu": "Mostrando _MENU_ registros por pagina",
+	            "zeroRecords": "Registros vacios",
+	            "info": "Mastando pagina _PAGE_ de _PAGES_",
+	            "infoEmpty": "Registros no disponibles",
+	            "infoFiltered": "(filtrado de un total de _MAX_ )"
+        	}
+		});
+	});
+</script>
 </body>
 </html>

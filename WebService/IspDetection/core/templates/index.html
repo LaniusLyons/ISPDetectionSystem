@@ -17,7 +17,7 @@
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) return;
   js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v2.9";
+  js.src = "//connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v2.9&appId=839343722883925";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
 <!--<h1>Testing</h1>
@@ -55,31 +55,39 @@
         </ul>
 <!---------------------------------------------------------------------------------->
         <div class="tab-content">
-             <div id="consult" class="tab-pane fade in active">
-               <form action=""><br>
-                    {% include 'content.html' %}
-               </form>
-             </div>
-
-              <div id="mapa" class="tab-pane fade">
-                  <div class="row">
-                        <div id="map-users" style="width:100%;height:400px;"></div>
+            <div id="consult" class="tab-pane fade in active">
+                  <form action=""><br>
+                        {% include 'content.html' %}
+                   </form>
+            </div>
+            <div id="mapa" class="tab-pane fade">
+                  <center>
+                    <div class="container">
+                        <div class="row">
+                            <div class="text-center" id="map-users" style="width:100%;height:400px;margin: auto;"></div>
+                        </div>
+                    </div>
+                  </center>
+            </div>
+            <div id="info" class="tab-pane fade">
+                 <div class="panel panel-default">
+                  <div class="panel-body">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores ducimus eius ex laborum odio quam recusandae sequi vitae! Aliquid ipsam nisi nostrum nulla odio quae qui saepe sint ullam veniam.
                   </div>
-              </div>
-
-              <div id="info" class="tab-pane fade">
-                  <div class="panel panel-default">
-                      <div class="panel-body">
-                         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores ducimus eius ex laborum odio quam recusandae sequi vitae! Aliquid ipsam nisi nostrum nulla odio quae qui saepe sint ullam veniam.
-                      </div>
-                  </div>
-              </div>
-
-        </div>
+            </div>
     </div>
 </div>
 <script>
       var map_info, map_users;
+
+       $('a[href="#mapa"]').click(function(e) {
+            setTimeout(initialise, 500);
+       });
+
+       function initialise() {
+            var myMap = document.getElementById('map-users');
+            google.maps.event.trigger(myMap, 'resize');
+       }
 
       function showError(error)
       {
@@ -104,15 +112,19 @@
       {
             // Create a Google coordinate object for where to center the map
             var latlng = new google.maps.LatLng( position.coords.latitude, position.coords.longitude );
-            var coordenadas = document.getElementById('latitud-longitud');
-            coordenadas.innerHTML = position.coords.latitude +" , "+ position.coords.longitude;
-            var myOptions = {
+            var infoOptions = {
               zoom:12,
               mapTypeId: google.maps.MapTypeId.ROADMAP,
               center: latlng,
               draggable: false
             };
-            map_info = new google.maps.Map(document.getElementById("map-info"), myOptions);
+            var myOptions = {
+              zoom:10,
+              mapTypeId: google.maps.MapTypeId.ROADMAP,
+              center: latlng
+            };
+            map_info = new google.maps.Map(document.getElementById("map-info"), infoOptions);
+            map_users = new google.maps.Map(document.getElementById("map-users"), myOptions);
             var marker = new google.maps.Marker( {
                 position: latlng,
                 map: map_info,
@@ -146,7 +158,6 @@ $(document).ready(function(){
 	}, "jsonp");
 });
 </script>
-
 <script type="application/javascript" src="https://api.ipify.org?format=jsonp&callback=getIP"></script>
 </body>
 </html>
