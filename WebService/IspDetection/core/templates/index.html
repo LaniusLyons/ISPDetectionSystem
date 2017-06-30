@@ -6,9 +6,9 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/css/materialize.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/js/materialize.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2XDKonqjSaAaVAeWqnLX5JdVwBQi-Gsg&amp;libraries=places,geometry&amp;region=ec&amp;language=es"></script>
 </head>
 <body>
@@ -20,62 +20,31 @@
   js.src = "//connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v2.9&appId=839343722883925";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
-<!--<h1>Testing</h1>
-<p>IP WS: {{IP|default:'No se encontro ip'}}</p>
-<p id="userIp">IP US: </p>-->
 
-<div class="container">
-    <div class="row">
-          <h2 style="text-align:center;">ISP finder Project</h2>
-    </div>
-    <div class="row">
-        <ul class="nav nav-tabs nav-justified" role="tablist">
-              <li class="active">
-                  <a data-toggle="tab" href="#consult">
-                      <span class="round-tabs two">
-                          <i class="glyphicon glyphicon-search"></i>
-                    </span>Consultar ISP
-                  </a>
-              </li>
-              <li>
-                  <a data-toggle="tab" href="#mapa">
-                    <span class="round-tabs two">
-                          <i class="glyphicon glyphicon-globe"></i>
-                    </span>Mapa
-                  </a>
-              </li>
-              <li>
-                  <a data-toggle="tab" href="#info">
-                      <span class="round-tabs two">
-                          <i class="glyphicon glyphicon-book"></i>
-                      </span>
-                      Informaci&oacute;n
-                  </a>
-              </li>
-        </ul>
-<!---------------------------------------------------------------------------------->
-        <div class="tab-content">
-            <div id="consult" class="tab-pane fade in active">
-                  <form action=""><br>
-                        {% include 'content.html' %}
-                   </form>
-            </div>
-            <div id="mapa" class="tab-pane fade">
-                  <center>
-                    <div class="container">
-                        <div class="row">
-                            <div class="text-center" id="map-users" style="width:100%;height:400px;margin: auto;"></div>
-                        </div>
+
+<div class="container-fluid">
+    <header>
+        <div class="row">
+              <nav class="nav-extended">
+                    <div class="nav-wrapper">
+                            <a href="#" class="brand-logo">ISP Finder Project</a>
                     </div>
-                  </center>
-            </div>
-            <div id="info" class="tab-pane fade">
-                 <div class="panel panel-default">
-                  <div class="panel-body">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores ducimus eius ex laborum odio quam recusandae sequi vitae! Aliquid ipsam nisi nostrum nulla odio quae qui saepe sint ullam veniam.
-                  </div>
-            </div>
-    </div>
+                    <div class="nav-content">
+                        <ul class="tabs tabs-transparent">
+                            <li class="tab"><a class="active" href="#consultar">Consultar</a></li>
+                            <li class="tab"><a href="#mapa">Mapa</a></li>
+                            <li class="tab"><a href="#info">Informaci&oacute;n</a></li>
+                        </ul>
+                    </div>
+              </nav>
+        </div>
+    </header>
+
+    <main>
+          <div id="consultar" class="col s12">Test 1</div>
+          <div id="mapa" class="col s12">Test 2</div>
+          <div id="info" class="col s12">Test 3</div>
+    </main>
 </div>
 <script>
       var map_info, map_users;
