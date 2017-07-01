@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/ISPDetectionSystem.iml" filepath="$PROJECT_DIR$/.idea/ISPDetectionSystem.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../pruebadjango/.idea/pruebadjango.iml" filepath="$PROJECT_DIR$/../pruebadjango/.idea/pruebadjango.iml" />
     </modules>
   </component>
 </project>

@@ -2,10 +2,14 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} ISP Finder {% endblock %}</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2XDKonqjSaAaVAeWqnLX5JdVwBQi-Gsg&amp;libraries=places,geometry&amp;region=ec&amp;language=es"></script>
 </head>
 <body>
 <div id="fb-root"></div>
@@ -20,9 +24,9 @@
 <p>IP WS: {{IP|default:'No se encontro ip'}}</p>
 <p id="userIp">IP US: </p>-->
 
-<div class="container-fluid">
+<div class="container">
     <div class="row">
-          <center><h2>ISP finder Project</h2></center>
+          <h2 style="text-align:center;">ISP finder Project</h2>
     </div>
     <div class="row">
         <ul class="nav nav-tabs nav-justified" role="tablist">
@@ -49,86 +53,31 @@
                   </a>
               </li>
         </ul>
-
         <div class="tab-content">
-          <div id="consult" class="tab-pane fade in active">
-              <form action=""><br>
-                <div class="container">
-                    <div class="row">
-                    <div class="col-md-4 col-sm-4 col-xs-12">
-                      <div class="text-center" id="map" style="width:300px;height:300px;margin: auto;"></div>
-                    </div>
-                    {{ aux }}
-                    <div class="col-md-8 col-sm-8 col-xs-12">
-                          <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">TU RED THE WIFI LOCAL</h3>
-                            </div>
-                            <div class="panel-body">
-                                <div class="col-md-12 col-sm-12 col-xs-12">
-                                  <label>Proveedor</label> {{ ispInfo.isp|default:'TU Proveedor'}}
-                                </div>
-                                <div class="col-md-12 col-sm-12 col-xs-12">
-                                  <label>IP</label> {{ ispIp|default:'Desconocido'}}
-                                </div>
-                                <div class="col-md-12 col-sm-12 col-xs-12">
-                                  <label>Pa&iacute;s</label> {{ ispInfo.country|default:'Desconocido'}}
-                                </div>
-                                <div class="col-md-12 col-sm-12 col-xs-12">
-                                  <label>Ciudad</label> {{ ispInfo.city|default:'Desconocido'}}
-                                </div>
-                                <div class="col-md-12 col-sm-12 col-xs-12">
-                                  <label>latitud/longitud</label> {{ ispInfo.lat|default:'Desconocido'}} / {{ ispInfo.lon|default:'Desconocido'}}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-6">
-                                <p>{{ user.is_authenticated }}</p>
-                                <p>{{ user }}</p>
-                                {% if user.is_authenticated %}
-                                  <p>{{ user.username }}</p>
-                                  <a href="{% url 'logout' %}">Logout</a>
-                                {% else %}
-                                    <a class="share-class" href="{% url 'social:begin' 'facebook' %}?coords=">Enviar con Facebook</a>
-                                    <br>
-                                    <div class="fb-login-button" data-max-rows="1" data-size="medium" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false" onclick=""></div>
-                                {% endif %}
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="input-group">
-                              <input type="text" class="form-control" placeholder="Ingresar ISP...">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-               </form>
-          </div>
-          <div id="mapa" class="tab-pane fade">
-              <center>
-                <div class="container">
-                    <div class="row">
-                        <div class="text-center" id="map2" style="width:400px;height:400px;margin: auto;"></div>
-                    </div>
-                </div>
-              </center>
-          </div>
-          <div id="info" class="tab-pane fade">
-             <div class="panel panel-default">
-              <div class="panel-body">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores ducimus eius ex laborum odio quam recusandae sequi vitae! Aliquid ipsam nisi nostrum nulla odio quae qui saepe sint ullam veniam.
-              </div>
+            <div id="consult" class="tab-pane fade in active">
+                  <form action=""><br>
+                        {% include 'content.html' %}
+                   </form>
             </div>
-          </div>
-        </div>
+            <div id="mapa" class="tab-pane fade">
+                  <center>
+                    <div class="container">
+                        <div class="row">
+                            <div class="text-center" id="map-users" style="width:100%;height:400px;margin: auto;"></div>
+                        </div>
+                    </div>
+                  </center>
+            </div>
+            <div id="info" class="tab-pane fade">
+                 <div class="panel panel-default">
+                  <div class="panel-body">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores ducimus eius ex laborum odio quam recusandae sequi vitae! Aliquid ipsam nisi nostrum nulla odio quae qui saepe sint ullam veniam.
+                  </div>
+            </div>
     </div>
 </div>
 <script>
-var latitude = null;
-var longitude = null;
-
+/*
   function initMap() {
     var map = new google.maps.Map(document.getElementById('map'), {
       center: {lat: -2.1597157, lng: -79.8145326},
@@ -180,8 +129,91 @@ var longitude = null;
       }
     shareContributionLink();
   });
+*/
+      var latitude, longitude;
+      var map_info, map_users;
+
+       $('a[href="#mapa"]').click(function(e) {
+            setTimeout(initialise, 500);
+       });
+
+       function initialise() {
+            var myMap = document.getElementById('map-users');
+            google.maps.event.trigger(myMap, 'resize');
+       }
+
+      function showError(error)
+      {
+            switch (error.code)
+            {
+                case error.PERMISSION_DENIED:
+                    alert("El requerimiento negado por el usuario");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    alert("Informacion de localizacion no disponible");
+                    break;
+                case error.TIMEOUT:
+                    alert("Tiempo de espera expirado");
+                    break;
+                case error.UNKNOWN_ERROR:
+                    alert("ERROR DESCONOCIDO");
+                    break;
+            }
+      }
+
+      function showPosition(position)
+      {
+            // Create a Google coordinate object for where to center the map
+            var latlng = new google.maps.LatLng( position.coords.latitude, position.coords.longitude );
+            latitude = position.coords.latitude;
+            longitude = position.coords.longitude;
+            shareContributionLink(latitude,longitude);
+            var infoOptions = {
+              zoom:12,
+              mapTypeId: google.maps.MapTypeId.ROADMAP,
+              center: latlng,
+              draggable: false
+            };
+            var myOptions = {
+              zoom:10,
+              mapTypeId: google.maps.MapTypeId.ROADMAP,
+              center: latlng
+            };
+            map_info = new google.maps.Map(document.getElementById("map-info"), infoOptions);
+            map_users = new google.maps.Map(document.getElementById("map-users"), myOptions);
+            var marker = new google.maps.Marker( {
+                position: latlng,
+                map: map_info,
+                icon: 'http://m.schuepfen.ch/icons/helveticons/black/60/Pin-location.png'
+            });
+      }
+
+      function initMap()
+      {
+            if (navigator.geolocation)
+            {
+               navigator.geolocation.getCurrentPosition(showPosition,showError);
+            } else
+            {
+               // Browser doesn't support Geolocation
+               console.log("Navegador no soporta geolocalizacion");
+            }
+      }
+
+      google.maps.event.addDomListener(window, 'load', initMap);
+
+
+    function shareContributionLink(latitude,longitude){
+        var link = "#";
+        if(latitude && longitude){
+          link = "{% url 'social:begin' 'facebook' %}?coords="+latitude + "," + longitude;
+        }
+        $(".share-class").attr("href", link);
+      }
+
+
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCISkw1JtoXe-g3_IKP3iHS_TjHvtaKAQw&callback=initMap"></script>
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCISkw1JtoXe-g3_IKP3iHS_TjHvtaKAQw&callback=initMap"></script> -->
 <script type="text/javascript">if (window.location.hash == '#_=_')window.location.hash = '';</script>
 </body>
 </html>

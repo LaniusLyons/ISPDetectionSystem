@@ -1,6 +1,11 @@
+*.pyc
+migrations/*
+WebService/IspDetection/IspDetection/ip.logs.txt
 /WebService/IspDetection/core/migrations
 WebService/IspDetection/ispfinder_env/*
 WebService/IspDetection/core/migrations/*
 WebService/IspDetection/api/migrations/*
 WebService/IspDetection/core/*pyc
 WebService/IspDetection/api/*pyc
+ip.logs.txt
+WebService/IspDetection/IspDetection/ip.logs.txt
