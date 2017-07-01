@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,80 +42,23 @@
     </header>
 
     <main>
-          <div id="consultar" class="col s12">Test 1</div>
-          <div id="mapa" class="col s12">Test 2</div>
-          <div id="info" class="col s12">Test 3</div>
+          <div id="consultar" class="col s12">
+                {% include 'content.html' %}
+          </div>
+          <div id="mapa" class="col s12">
+                <div class="container">
+                     <div class="row z-depth-4">
+                           <div class="text-center" id="map-users" style="width:100%;height:400px;margin-top: 30px;"></div>
+                     </div>
+                </div>
+          </div>
+          <div id="info" class="col s12">
+
+          </div>
     </main>
 </div>
-<script>
-      var map_info, map_users;
-
-       $('a[href="#mapa"]').click(function(e) {
-            setTimeout(initialise, 500);
-       });
-
-       function initialise() {
-            var myMap = document.getElementById('map-users');
-            google.maps.event.trigger(myMap, 'resize');
-       }
-
-      function showError(error)
-      {
-            switch (error.code)
-            {
-                case error.PERMISSION_DENIED:
-                    alert("El requerimiento negado por el usuario");
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    alert("Informacion de localizacion no disponible");
-                    break;
-                case error.TIMEOUT:
-                    alert("Tiempo de espera expirado");
-                    break;
-                case error.UNKNOWN_ERROR:
-                    alert("ERROR DESCONOCIDO");
-                    break;
-            }
-      }
-
-      function showPosition(position)
-      {
-            // Create a Google coordinate object for where to center the map
-            var latlng = new google.maps.LatLng( position.coords.latitude, position.coords.longitude );
-            var infoOptions = {
-              zoom:12,
-              mapTypeId: google.maps.MapTypeId.ROADMAP,
-              center: latlng,
-              draggable: false
-            };
-            var myOptions = {
-              zoom:10,
-              mapTypeId: google.maps.MapTypeId.ROADMAP,
-              center: latlng
-            };
-            map_info = new google.maps.Map(document.getElementById("map-info"), infoOptions);
-            map_users = new google.maps.Map(document.getElementById("map-users"), myOptions);
-            var marker = new google.maps.Marker( {
-                position: latlng,
-                map: map_info,
-                icon: 'http://m.schuepfen.ch/icons/helveticons/black/60/Pin-location.png'
-            });
-      }
-
-      function initMap()
-      {
-            if (navigator.geolocation)
-            {
-               navigator.geolocation.getCurrentPosition(showPosition,showError);
-            } else
-            {
-               // Browser doesn't support Geolocation
-               console.log("Browser doesn't support Geolocation");
-            }
-      }
-
-      google.maps.event.addDomListener(window, 'load', initMap);
-</script>
+<script src="{% static 'js/stylemap.js' %}"></script>
+<script src="{% static 'js/mapa.js' %}"></script>
 <script>
 function getIP(json) {
 	$('#userIp').html("IP US: " + json.ip);
