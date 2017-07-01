@@ -53,6 +53,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
+    #'core.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'IspDetection.urls'
@@ -152,7 +153,11 @@ LOGIN_URL = '/login/'
 LOGOUT_URL = '/logout/'
 LOGIN_REDIRECT_URL = '/login/'
 
+
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/login/'
+SOCIAL_AUTH_LOGIN_ERROR_URL = '/'
+SOCIAL_AUTH_RAISE_EXCEPTIONS = False
+SOCIAL_AUTH_FIELDS_STORED_IN_SESSION = ['coords']
 SOCIAL_AUTH_USER_MODEL = 'core.Collaborator'
 SOCIAL_AUTH_FACEBOOK_KEY = '839343722883925'
 SOCIAL_AUTH_FACEBOOK_SECRET = '1a75b65ab1a77c7369c5d6b8b8874fb6'
@@ -174,5 +179,5 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
     'social_core.pipeline.social_auth.associate_by_email',
-    #'core.pipelines.user_details',
+    'core.pipelines.custom_extras',
 )

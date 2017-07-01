@@ -7,6 +7,7 @@ from django.conf import settings
 from .models import *
 from datetime import datetime
 from netaddr import *
+import requests
 
 
 def validateIP(ip):
@@ -40,14 +41,12 @@ def get_client_ip(request):
 
 def index(request):
 	print 'index'
-	print request.user
 	ip = get_client_ip(request)
 	ip = ['186.3.146.133', '10.10.10.32', '170.120.34.65','192.168.0.100']
 	if isinstance(ip, list):
-		print 'holi'
 		isp = [x for x in ip if validateIP(x)]
-		print isp
-	return render(request,'index.html',{'isp_ip':isp[0]})
+		aux = requests.get('http://ip-api.com/json/'+isp[0])
+	return render(request,'index.html',{'ispInfo':aux.json(),'ispIp':isp[0]})
 
 
 def logs(request):
@@ -60,13 +59,19 @@ def logs(request):
 
 def login(request):
 	print 'login'
+	print request.session['coords']
 	if request.user.is_authenticated():
-		print 'yes'
-	else:
-		print 'no'
-		print request.user
-	return HttpResponseRedirect(reverse('index'))
+		coords = request.session['coords'].split(',')
+		lat = coords[0]
+		lon = coords[1]
+		postAPICollaborator(request.user,lat,lon)
+
+	return HttpResponseRedirect(reverse('logout'))
 
 def log_out(request):
 	logout(request)
 	return redirect('../')
+
+def postAPICollaborator(user,lat,lon):
+	print 'post api'
+	pass

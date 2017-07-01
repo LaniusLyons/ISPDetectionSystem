@@ -58,6 +58,7 @@
                     <div class="col-md-4 col-sm-4 col-xs-12">
                       <div class="text-center" id="map" style="width:300px;height:300px;margin: auto;"></div>
                     </div>
+                    {{ aux }}
                     <div class="col-md-8 col-sm-8 col-xs-12">
                           <div class="panel panel-primary">
                             <div class="panel-heading">
@@ -65,19 +66,19 @@
                             </div>
                             <div class="panel-body">
                                 <div class="col-md-12 col-sm-12 col-xs-12">
-                                  <label>Proveedor</label> {{ isp_name|default:'TU Proveedor'}}
+                                  <label>Proveedor</label> {{ ispInfo.isp|default:'TU Proveedor'}}
                                 </div>
                                 <div class="col-md-12 col-sm-12 col-xs-12">
-                                  <label>IP</label> {{ isp_ip|default:'Desconocido'}}
+                                  <label>IP</label> {{ ispIp|default:'Desconocido'}}
                                 </div>
                                 <div class="col-md-12 col-sm-12 col-xs-12">
-                                  <label>Pa&iacute;s</label> {{ isp_country|default:'Desconocido'}}
+                                  <label>Pa&iacute;s</label> {{ ispInfo.country|default:'Desconocido'}}
                                 </div>
                                 <div class="col-md-12 col-sm-12 col-xs-12">
-                                  <label>Ciudad</label> {{ isp_city|default:'Desconocido'}}
+                                  <label>Ciudad</label> {{ ispInfo.city|default:'Desconocido'}}
                                 </div>
                                 <div class="col-md-12 col-sm-12 col-xs-12">
-                                  <label>latitud/longitud</label> {{ isp_coor|default:'Desconocido'}}
+                                  <label>latitud/longitud</label> {{ ispInfo.lat|default:'Desconocido'}} / {{ ispInfo.lon|default:'Desconocido'}}
                                 </div>
                             </div>
                         </div>
@@ -91,9 +92,9 @@
                                   <p>{{ user.username }}</p>
                                   <a href="{% url 'logout' %}">Logout</a>
                                 {% else %}
-                                    <a href="{% url 'social:begin' 'facebook' %}">Enviar con Facebook</a>
+                                    <a class="share-class" href="{% url 'social:begin' 'facebook' %}?coords=">Enviar con Facebook</a>
                                     <br>
-                                    <div class="fb-login-button" data-max-rows="1" data-size="medium" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div>
+                                    <div class="fb-login-button" data-max-rows="1" data-size="medium" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false" onclick=""></div>
                                 {% endif %}
                         </div>
                         <div class="col-lg-6">
@@ -125,51 +126,62 @@
     </div>
 </div>
 <script>
-var map;
-    function myMap() {
-    var mapOptions = {
-        center: new google.maps.LatLng(-2.1597157,-79.8145326),
-        zoom: 10,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-    }
-    map = new google.maps.Map(document.getElementById("map"), mapOptions);
-    }
-</script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCISkw1JtoXe-g3_IKP3iHS_TjHvtaKAQw&callback=myMap"></script>
-<script>
-function getIP(json) {
-	$('#userIp').html("IP US: " + json.ip);
-}
+var latitude = null;
+var longitude = null;
 
-$(document).ready(function(){
-	$.get("http://ipinfo.io", function(response) {
-	    console.log(response.ip);
-	}, "jsonp");
+  function initMap() {
+    var map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: -2.1597157, lng: -79.8145326},
+      zoom: 10
+    });
 
-
-  function getLocation() {
+    // Try HTML5 geolocation.
     if (navigator.geolocation) {
-        navigator.geolocation.watchPosition(showPosition);
-    } else { 
-        x.innerHTML = "Geolocation is not supported by this browser.";}
-    }
-    
-  function showPosition(position) {
-      var lat = position.coords.latitude;
-      var long = position.coords.longitude;
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        latitude = position.coords.latitude;
+        longitude = position.coords.longitude;
 
-      var marker = new google.maps.Marker({
-            position: {lat: lat, lng: long},
+        var marker = new google.maps.Marker({
+            position: pos,
             map: map,
-            title: 'Hello World!'
+            title: 'Tu estas aquí'
+        });
+        map.setCenter(pos);
+        map.setZoom(12);
+      }, function() {
+        //handleLocationError(true, infoWindow, map.getCenter());
       });
-      map.setCenter(new google.maps.LatLng(lat,long));
-      map.setZoom(12);
+    } else {
+      var infoWindow = new google.maps.InfoWindow({map: map});
+      infoWindow.setPosition(pos);
+      // Browser doesn't support Geolocation
+      handleLocationError(false, infoWindow, map.getCenter());
+    }
   }
 
-  getLocation();
-});
+  function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+    infoWindow.setPosition(pos);
+    infoWindow.setContent(browserHasGeolocation ?
+                          'Error: Servicio Geolocalizador ha fallado' :
+                          'Error: Tu navegador no soporta geolocalizacion');
+  }
+
+  $(document).ready(function(){
+    function shareContributionLink(){
+        var link = "#";
+        if(latitude && longitude){
+          link = "{% url 'social:begin' 'facebook' %}?coords="+latitude + "," + longitude;
+        }
+        $(".share-class").attr("href", link);
+      }
+    shareContributionLink();
+  });
 </script>
-<script type="application/javascript" src="https://api.ipify.org?format=jsonp&callback=getIP"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCISkw1JtoXe-g3_IKP3iHS_TjHvtaKAQw&callback=initMap"></script>
+<script type="text/javascript">if (window.location.hash == '#_=_')window.location.hash = '';</script>
 </body>
 </html>
