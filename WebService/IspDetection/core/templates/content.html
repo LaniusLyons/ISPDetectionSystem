@@ -1,54 +1,50 @@
-<div class="container">
+  <div class="container">
       <div class="row">
-             <div class="col-md-4 col-sm-4 col-xs-12">
-                   <div class="text-center" id="map-info" style="width:300px;height:300px;margin: auto;"></div>
-             </div>
-             <div class="col-md-8 col-sm-8 col-xs-12">
-                  <div class="panel panel-primary">
-                       <div class="panel-heading">
-                            <h3 class="panel-title">TU RED WIFI LOCAL</h3>
-                       </div>
-                       <div class="panel-body">
-                                <div class="col-md-12 col-sm-12 col-xs-12">
-                                  <label>Proveedor</label> {{ isp_name|default:'TU Proveedor'}}
-                                </div>
-                                <div class="col-md-12 col-sm-12 col-xs-12">
-                                  <label>IP</label> {{ isp_ip|default:'Desconocido'}}
-                                </div>
-                                <div class="col-md-12 col-sm-12 col-xs-12">
-                                  <label>Pa&iacute;s</label> {{ isp_country|default:'Desconocido'}}
-                                </div>
-                                <div class="col-md-12 col-sm-12 col-xs-12">
-                                  <label>Ciudad</label> {{ isp_city|default:'Desconocido'}}
-                                </div>
-                                <div class="col-md-12 col-sm-12 col-xs-12">
-                                  <label>latitud/longitud</label> {{ isp_coor|default:'Desconocido'}}
-                                </div>
-                       </div>
+      <div class="col-md-4 col-sm-4 col-xs-12">
+        <div class="text-center" id="map-info" style="width:300px;height:300px;margin: auto;"></div>
+      </div>
+      <div class="col-md-8 col-sm-8 col-xs-12">
+            <div class="panel panel-primary">
+              <div class="panel-heading">
+                  <h3 class="panel-title">TU RED THE WIFI LOCAL</h3>
+              </div>
+              <div class="panel-body">
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <label>Proveedor</label> {{ ispInfo.isp|default:'TU Proveedor'}}
                   </div>
-             </div>
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <label>IP</label> {{ ispIp|default:'Desconocido'}}
+                  </div>
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <label>Pa&iacute;s</label> {{ ispInfo.country|default:'Desconocido'}}
+                  </div>
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <label>Ciudad</label> {{ ispInfo.city|default:'Desconocido'}}
+                  </div>
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <label>latitud/longitud</label> {{ ispInfo.lat|default:'Desconocido'}} / {{ ispInfo.lon|default:'Desconocido'}}
+                  </div>
+              </div>
+          </div>
+      </div>
       </div>
       <div class="row">
-            <div class="col-sm-6 col-md-6 col-xs-12"><br>
-                          <!--<p>{{ user.is_authenticated }}</p>
-                          <p>{{ user }}</p>-->
-                          {% if user.is_authenticated %}
-                                 <p>{{ user.username }}</p>
-                                 <a class="btn btn-default" href="{% url 'logout' %}">Logout</a>
-                          {% else %}
-                                 <a class="btn btn-default" href="{% url 'social:begin' 'facebook' %}">Enviar con Facebook</a>
-                                 <br>
-                                 <!--<div class="fb-login-button" data-max-rows="1" data-size="medium" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div>-->
-                          {% endif %}
-            </div>
-             <br>
-            <div class="col-sm-6 col-md-6 col-xs-12">
-                  <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Ingresar ISP...">
-                        <span class="input-group-btn">
-                             <button class="btn btn-primary" type="button">Compartir</button>
-                        </span>
-                  </div>
-            </div>
+          <div class="col-lg-6">
+                  <p>{{ user.is_authenticated }}</p>
+                  <p>{{ user }}</p>
+                  {% if user.is_authenticated %}
+                    <p>{{ user.username }}</p>
+                    <a href="{% url 'logout' %}">Logout</a>
+                  {% else %}
+                      <a class="share-class" href="{% url 'social:begin' 'facebook' %}?coords=">Enviar con Facebook</a>
+                      <br>
+                      <div class="fb-login-button" data-max-rows="1" data-size="medium" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false" onclick=""></div>
+                  {% endif %}
+          </div>
+          <div class="col-lg-6">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Ingresar ISP...">
+              </div>
+          </div>
       </div>
-</div>
+  </div>
