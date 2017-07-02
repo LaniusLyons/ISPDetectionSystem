@@ -30,16 +30,9 @@
       </div>
       <div class="row">
           <div class="col-lg-6">
-                  <p>{{ user.is_authenticated }}</p>
-                  <p>{{ user }}</p>
-                  {% if user.is_authenticated %}
-                    <p>{{ user.username }}</p>
-                    <a href="{% url 'logout' %}">Logout</a>
-                  {% else %}
-                      <a class="share-class" href="{% url 'social:begin' 'facebook' %}?coords=">Enviar con Facebook</a>
-                      <br>
-                      <div class="fb-login-button" data-max-rows="1" data-size="medium" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false" onclick=""></div>
-                  {% endif %}
+               <a class="share-class" href="{% url 'social:begin' 'facebook' %}?coords=">Enviar con Facebook</a>
+               <br>
+               <div class="fb-login-button" data-max-rows="1" data-size="medium" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false" onclick=""></div>
           </div>
           <div class="col-lg-6">
               <div class="input-group">
