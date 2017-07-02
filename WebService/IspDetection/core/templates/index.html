@@ -65,10 +65,12 @@
                 </div>
           </div>
     </main>
+    {% include 'modal.html' %}
 </div>
 
 <script src="{% static 'js/stylemap.js' %}"></script>
 <script src="{% static 'js/mapa.js' %}"></script>
+<script src="{% static 'js/modal.js' %}"></script>
 <script>
 function getIP(json) {
 	$('#userIp').html("IP US: " + json.ip);
