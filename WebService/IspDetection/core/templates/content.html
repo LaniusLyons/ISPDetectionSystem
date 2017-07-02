@@ -7,14 +7,14 @@
               <div class="card blue">
                     <div class="card-content white-text">
                          <span class="card-title">Red WiFi Local</span>
-                         <p class="flow-text">Proveedor: {{ isp_name|default:'TU Proveedor'}}</p>
-                         <p class="flow-text">IP: {{ isp_ip|default:'Desconocido'}}</p>
-                         <p class="flow-text">Pa&iacute;s: {{ isp_country|default:'Desconocido'}}</p>
-                         <p class="flow-text">Ciudad: {{ isp_city|default:'Desconocido'}}</p>
-                         <p class="flow-text">latitud/longitud: {{ isp_coor|default:'Desconocido'}}</p>
+                         <p class="flow-text">Proveedor: {{ ispInfo.isp|default:'TU Proveedor'}}</p>
+                         <p class="flow-text">IP: {{ ispIp|default:'Desconocido'}}</p>
+                         <p class="flow-text">Pa&iacute;s: {{ ispInfo.country|default:'Desconocido'}}</p>
+                         <p class="flow-text">Ciudad: {{ ispInfo.city|default:'Desconocido'}}</p>
+                         <p class="flow-text">latitud/longitud: {{ ispInfo.lat|default:'Desconocido'}}</p>
                     </div>
                     <div class="card-action">
-                         <a href="#">Compartir con Facebook</a>
+                         <a href="{% url 'social:begin' 'facebook' %}?coords=">Enviar con Facebook</a>
                     </div>
               </div>
         </div>
