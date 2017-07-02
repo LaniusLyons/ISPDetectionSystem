@@ -4,11 +4,14 @@
               <div class="text-center" id="map-info" style="width:100%;height:360px;"></div>
         </div>
         <div class="col s12 m6">
-              <div class="card blue-grey darken-1">
+              <div class="card blue">
                     <div class="card-content white-text">
                          <span class="card-title">Red WiFi Local</span>
-                         <p>I am a very simple card. I am good at containing small bits of information.
-                         I am convenient because I require little markup to use effectively.</p>
+                         <p class="flow-text">Proveedor: {{ isp_name|default:'TU Proveedor'}}</p>
+                         <p class="flow-text">IP: {{ isp_ip|default:'Desconocido'}}</p>
+                         <p class="flow-text">Pa&iacute;s: {{ isp_country|default:'Desconocido'}}</p>
+                         <p class="flow-text">Ciudad: {{ isp_city|default:'Desconocido'}}</p>
+                         <p class="flow-text">latitud/longitud: {{ isp_coor|default:'Desconocido'}}</p>
                     </div>
                     <div class="card-action">
                          <a href="#">Compartir con Facebook</a>
