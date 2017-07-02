@@ -8,5 +8,4 @@ WebService/IspDetection/api/migrations/*
 WebService/IspDetection/core/*pyc
 WebService/IspDetection/api/*pyc
 /status
-ip.logs.txt
 WebService/IspDetection/IspDetection/ip.logs.txt
