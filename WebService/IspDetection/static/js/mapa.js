@@ -3,7 +3,7 @@ var map_info, map_users;
       function shareContributionLink(latitude,longitude){
         var link = "#";
         if(latitude && longitude){
-          link = "{% url 'social:begin' 'facebook' %}?coords="+latitude + "," + longitude;
+          link = "/login/facebook/?coords="+latitude + "," + longitude;
         }
         $(".share-class").attr("href", link);
       }
