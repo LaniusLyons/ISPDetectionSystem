@@ -16,11 +16,13 @@ var map_info, map_users;
               zoom:12,
               mapTypeId: google.maps.MapTypeId.ROADMAP,
               center: latlng,
-              draggable: true
+              animation: google.maps.Animation.DROP,
+              streetViewControl: false
             };
             var myOptions = {
               zoom:10,
               mapTypeId: google.maps.MapTypeId.ROADMAP,
+              streetViewControl: false,
               center: latlng
             };
             map_info = new google.maps.Map(document.getElementById("map-info"), infoOptions);
@@ -31,14 +33,20 @@ var map_info, map_users;
             map_users.setMapTypeId('styled_map');
             if(is_permite_ubicacion)
             {
+                showToast();
                 var marker = new google.maps.Marker({
                     position: latlng,
                     map: map_info,
+                    draggable: true,
                     icon: 'http://m.schuepfen.ch/icons/helveticons/black/60/Pin-location.png'
                 });
             }
        }
 
+       function showToast() {
+           var $toastContent = $('<span>Mueve el marcador al lugar en donde te encuentras</span>');
+            Materialize.toast($toastContent, 5000, 'rounded');
+       }
       function showError(error)
       {
             switch (error.code)
