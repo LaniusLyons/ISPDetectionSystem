@@ -14,7 +14,7 @@
                          <p class="flow-text">latitud/longitud: {{ ispInfo.lat|default:'Desconocido'}} / {{ ispInfo.lon|default:'Desconocido'}}</p>
                     </div>
                     <div class="card-action">
-                        <a id="compartir-facebook" class="yellow-text" href="{% url 'social:begin' 'facebook' %}?coords=">Enviar con Facebook</a>
+                        <a id="compartir-facebook" class="yellow-text share-class" href="{% url 'social:begin' 'facebook' %}?coords=">Enviar con Facebook</a>
                     </div>
                   <!-- <br>
                        <div class="fb-login-button" data-max-rows="1" data-size="medium" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false" onclick=""></div> -->

@@ -3,7 +3,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-    <title>{% block title %} ISP Finder {% endblock %}</title>
+    <title>{% block title %} IspFinderProject {% endblock %}</title>
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -28,7 +28,7 @@
         <div class="row">
               <nav class="nav-extended blue">
                     <div class="nav-wrapper">
-                            <a href="#" class="brand-logo center">ISP Finder Project</a>
+                            <a href="#" class="brand-logo center">IspFinderProject</a>
                     </div>
                     <div class="nav-content">
                         <ul class="tabs tabs-transparent">
@@ -71,21 +71,6 @@
 <script src="{% static 'js/stylemap.js' %}"></script>
 <script src="{% static 'js/mapa.js' %}"></script>
 <script src="{% static 'js/modal.js' %}"></script>
-<script>
-function getIP(json) {
-	$('#userIp').html("IP US: " + json.ip);
-}
-
-    function shareContributionLink(latitude,longitude){
-        var link = "#";
-        if(latitude && longitude){
-          link = "{% url 'social:begin' 'facebook' %}?coords="+latitude + "," + longitude;
-        }
-        $(".share-class").attr("href", link);
-      }
-
-
-</script>
 <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCISkw1JtoXe-g3_IKP3iHS_TjHvtaKAQw&callback=initMap"></script> -->
 <script type="text/javascript">if (window.location.hash == '#_=_')window.location.hash = '';</script>
 </body>

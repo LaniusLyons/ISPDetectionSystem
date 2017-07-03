@@ -1,4 +1,12 @@
 var map_info, map_users;
+        
+      function shareContributionLink(latitude,longitude){
+        var link = "#";
+        if(latitude && longitude){
+          link = "{% url 'social:begin' 'facebook' %}?coords="+latitude + "," + longitude;
+        }
+        $(".share-class").attr("href", link);
+      }
 
        $('a[href="#mapa"]').click(function(e) {
             setTimeout(initialise, 500);
@@ -13,7 +21,7 @@ var map_info, map_users;
        {
            var latlng = is_permite_ubicacion ? new google.maps.LatLng( position.coords.latitude, position.coords.longitude ) : {lat: -2.16667, lng: -79.9};
            var infoOptions = {
-              zoom:12,
+              zoom:14,
               mapTypeId: google.maps.MapTypeId.ROADMAP,
               center: latlng,
               animation: google.maps.Animation.DROP,
@@ -33,6 +41,7 @@ var map_info, map_users;
             map_users.setMapTypeId('styled_map');
             if(is_permite_ubicacion)
             {
+                shareContributionLink(position.coords.latitude,position.coords.longitude);
                 showToast();
                 var marker = new google.maps.Marker({
                     position: latlng,
@@ -40,11 +49,13 @@ var map_info, map_users;
                     draggable: true,
                     icon: 'http://m.schuepfen.ch/icons/helveticons/black/60/Pin-location.png'
                 });
+            }else{
+
             }
        }
 
        function showToast() {
-           var $toastContent = $('<span>Mueve el marcador al lugar en donde te encuentras</span>');
+           var $toastContent = $('<span>Hemos localizado tu ubicación <br> Asegurate moviendo el marcador al lugar exacto donde te encuentras</span>');
             Materialize.toast($toastContent, 5000, 'rounded');
        }
       function showError(error)
