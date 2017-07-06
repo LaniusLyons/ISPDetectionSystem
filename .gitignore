@@ -1,4 +1,6 @@
 *.pyc
+node_modules/
+node_modules/*
 migrations/*
 WebService/IspDetection/IspDetection/ip.logs.txt
 /WebService/IspDetection/core/migrations
