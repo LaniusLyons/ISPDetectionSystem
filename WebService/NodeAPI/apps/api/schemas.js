@@ -9,7 +9,7 @@ var schemas = {
 		username : {type : String},
 		fk_provider : {type : String},
 		lat : {type : Number},
-		long : {type : Number},
+		lon : {type : Number},
 		timestamps : { type: Date, default: Date.now }
 	}),
 	providerSchema : new Schema({
@@ -17,7 +17,7 @@ var schemas = {
 		organizattion : {type : String},
 		IP : {type : String},
 		lat : {type : Number},
-		long : {type : Number},
+		lon : {type : Number},
 		city : {type : String},
 		country : {type : String}
 	})

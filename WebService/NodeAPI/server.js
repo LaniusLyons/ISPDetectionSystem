@@ -1,7 +1,7 @@
 'use strict';
 var express = require('express'),
 	server = express(),
-	bodyParser = require('body-parser'),
+	bodyParser = require('body-parser').json(),
 	port = process.env.PORT || 9000;
 
 /*var server = http.createServer((req,res)=>{
@@ -10,11 +10,11 @@ var express = require('express'),
 	res.end('IspFinderProjectAPI');
 });*/
 
-server.use(bodyParser.urlencoded({extended:false}));
-
 server.listen(port,()=>{
 	console.log("API server Ready on port "+port);
 });
+
+server.use(bodyParser);
 
 server.get('/',(req,res)=>{
 	res.send('IspFinderProjectAPI');
