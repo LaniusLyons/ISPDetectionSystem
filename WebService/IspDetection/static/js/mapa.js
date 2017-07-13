@@ -1,5 +1,4 @@
 var map_info, map_users;
-        
       function shareContributionLink(latitude,longitude){
         var link = "#";
         if(latitude && longitude){
@@ -42,21 +41,24 @@ var map_info, map_users;
             if(is_permite_ubicacion)
             {
                 shareContributionLink(position.coords.latitude,position.coords.longitude);
-                showToast();
+                showToast(showToastMessage);
                 var marker = new google.maps.Marker({
                     position: latlng,
                     map: map_info,
                     draggable: true,
-                    icon: 'http://m.schuepfen.ch/icons/helveticons/black/60/Pin-location.png'
+                    icon: url_marker
                 });
             }else{
 
             }
        }
 
-       function showToast() {
-           var $toastContent = $('<span>Hemos localizado tu ubicación <br> Asegurate moviendo el marcador al lugar exacto donde te encuentras</span>');
-            Materialize.toast($toastContent, 5000, 'rounded');
+       function showToast(toastMessage) {
+           if(toastMessage)
+           {
+               var $toastContent = $('<span>Hemos localizado tu ubicación <br> Asegurate moviendo el marcador al lugar exacto donde te encuentras</span>');
+               Materialize.toast($toastContent, 5000, 'rounded');
+           }
        }
       function showError(error)
       {

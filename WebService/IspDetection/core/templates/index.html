@@ -67,7 +67,26 @@
     </main>
     {% include 'modal.html' %}
 </div>
-
+<script type="application/javascript">
+    var url_marker = "{% static 'img/location.png' %}";
+    var is_compartir_facebook = "{{ response }}";
+    var toast_message;
+    var showToastMessage;
+    if(is_compartir_facebook == "GOOD_STATUS")
+    {
+        toast_message = $('<span>Gracias por compartir tu informacion</span>');
+        showToastMessage = false;
+        Materialize.toast(toast_message, 5000, 'rounded');
+    }else if(is_compartir_facebook == "BAD_STATUS")
+    {
+        toast_message = $('<span>Error al compartir tu informacion</span>');
+        showToastMessage = true;
+        Materialize.toast(toast_message, 5000, 'rounded');
+    }else
+    {
+        showToastMessage = true;
+    }
+</script>
 <script src="{% static 'js/stylemap.js' %}"></script>
 <script src="{% static 'js/mapa.js' %}"></script>
 <script src="{% static 'js/modal.js' %}"></script>

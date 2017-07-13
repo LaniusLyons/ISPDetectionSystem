@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-\
+from _mysql import result
+
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.core.urlresolvers import reverse
@@ -8,6 +10,8 @@ from .models import *
 from datetime import datetime
 from netaddr import *
 import requests
+import pprint
+import json
 
 
 def validateIP(ip):
@@ -39,15 +43,23 @@ def get_client_ip(request):
 
 # Create your views here.
 
-def index(request):
+
+def index(request,api_response=None):
 	print 'index'
 	ip = get_client_ip(request)
 	ip = ['186.3.146.133', '10.10.10.32', '170.120.34.65','192.168.0.100']
 	if isinstance(ip, list):
 		isp = [x for x in ip if validateIP(x)]
 		aux = requests.get('http://ip-api.com/json/'+isp[0])
-	return render(request,'index.html',{'ispInfo':aux.json(),'ispIp':isp[0]})
+	return render(request,'index.html',{'ispInfo':aux.json(),'ispIp':isp[0], 'response':switch(api_response)})
 
+
+def switch(argument):
+	switcher = {
+		'200':"GOOD_STATUS",
+		'400':"BAD_STATUS",
+	}
+	return switcher.get(argument,"Nada")
 
 def logs(request):
 	dir = settings.BASE_DIR + settings.LOGS_FOLDER + 'ip.logs.txt'
@@ -60,18 +72,30 @@ def logs(request):
 def login(request):
 	print 'login'
 	print request.session['coords']
+	response = None
 	if request.user.is_authenticated():
 		coords = request.session['coords'].split(',')
 		lat = coords[0]
 		lon = coords[1]
-		postAPICollaborator(request.user,lat,lon)
+		response = postAPICollaborator(request.user,lat,lon)
+	#return HttpResponseRedirect('/'+ str(response))
+	return redirect(reverse('logout' , args=(str(response),) ) ) #reverse('logout')
 
-	return HttpResponseRedirect(reverse('logout'))
-
-def log_out(request):
+def log_out(request, api_response):
 	logout(request)
-	return redirect('../')
+	return HttpResponseRedirect('/' + api_response)
+	#return redirect('../')
 
 def postAPICollaborator(user,lat,lon):
-	print 'post api'
-	pass
+	#pprint.pprint(user.username)
+	payload = {"email":"metacris93@hotmail.com",
+			   "username":user.username,
+			   "fk_provider":"186.3.146.108",
+			   "lat":lat,
+			   "lon":lon}
+	headers = {"content-type": "application/json", "accept": "application/json"}
+	r = requests.post("http://localhost:9000/api/collaborators", data=json.dumps(payload), headers=headers ) # url , data , json, kwargs
+	return 200 if r.status_code == 200 else 400
+	#get_request = requests.get("http://localhost:9000/api/collaborators/")
+	#print(get_request.text)
+
