@@ -73,7 +73,6 @@ def login(request):
 	print 'login'
 	print request.session['coords']
 	response = None
-	responseGet = None
 	if request.user.is_authenticated():
 		coords = request.session['coords'].split(',')
 		lat = coords[0]
