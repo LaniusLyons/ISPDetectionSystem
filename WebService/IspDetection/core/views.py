@@ -41,13 +41,12 @@ def get_client_ip(request):
 		f.close()
 	return ip
 
-# Create your views here.
-
 
 def index(request,api_response=None):
 	print 'index'
 	ip = get_client_ip(request)
-	ip = ['186.3.146.133', '10.10.10.32', '170.120.34.65','192.168.0.100']
+	#delete next line for PROD Server
+	ip = ['181.175.74.217', '10.10.10.32', '170.120.34.65','192.168.0.100']
 	if isinstance(ip, list):
 		isp = [x for x in ip if validateIP(x)]
 		aux = requests.get('http://ip-api.com/json/'+isp[0])
@@ -60,6 +59,7 @@ def switch(argument):
 		'400':"BAD_STATUS",
 	}
 	return switcher.get(argument,"Nada")
+
 
 def logs(request):
 	dir = settings.BASE_DIR + settings.LOGS_FOLDER + 'ip.logs.txt'
@@ -78,15 +78,23 @@ def login(request):
 		coords = request.session['coords'].split(',')
 		lat = coords[0]
 		lon = coords[1]
-		response = postAPICollaborator(request.user,lat,lon)
+		ispIP = request.session['ispIP']
+		ispName = request.session['ispName']
+		print lat, lon, ispName, ispIP
+		is_authenticated = authenticateAPI()
+		if lat and lon and ispIP and ispName and is_authenticated == 200:
+			response = postAPICollaborator(request.user,lat,lon,ispIP,ispName)
+		else:
+			response = 400
 
-	return redirect(reverse('logout' , args=(str(responseGet),) ) )
+	return redirect(reverse('logout' , args=(str(response),) ) )
 
 def log_out(request, api_response):
+	print 'logout'
 	logout(request)
 	return HttpResponseRedirect('/' + api_response)
 
-def loginAPI():
+def authenticateAPI():
 	payload = {
 		"user_name":"user_django",
 		"password":"123456"
@@ -100,14 +108,12 @@ def getClient():
 	pprint.pprint(r.text)
 	return r.status_code
 
-def postAPICollaborator(user,lat,lon):
-	payload = {"email":"metacris93@hotmail.com",
-			   "username":user.username,
-			   "fk_provider":"186.3.146.108",
-			   "lat":lat,
-			   "lon":lon}
-	headers = {"content-type": "application/json", "accept": "application/json"}
-	r = requests.post( settings.URL_API+'/collaborators', data=json.dumps(payload), headers=headers ) # url , data , json, kwargs
-	return 200 if r.status_code == 200 else 400
-
-
+def postAPICollaborator(user,lat,lon,ispIP,ispName):
+	payload = {"email":user.email,
+			   "isp_ip":ispIP,
+			   "isp_name":ispName,
+			   "latitude":lat,
+			   "longitude":lon}
+	r = settings.SESSION.post(settings.URL_API+"/clientInfo/insert", data=payload) # url , data , json, kwargs
+	print r.text
+	return 200 if r.status_code == 200 or r.status_code == 201 else 400

@@ -21,7 +21,12 @@
   js.src = "//connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v2.9&appId=839343722883925";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
+<script type="text/javascript">
+  
+    var ispIP = "{{ ispInfo.isp }}";
+    var ispName = "{{ ispIp }}";
 
+</script>
 
 <div class="container-fluid">
     <header>
@@ -86,6 +91,7 @@
     {
         showToastMessage = true;
     }
+
 </script>
 <script src="{% static 'js/stylemap.js' %}"></script>
 <script src="{% static 'js/mapa.js' %}"></script>
