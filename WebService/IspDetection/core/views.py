@@ -73,29 +73,41 @@ def login(request):
 	print 'login'
 	print request.session['coords']
 	response = None
+	responseGet = None
 	if request.user.is_authenticated():
 		coords = request.session['coords'].split(',')
 		lat = coords[0]
 		lon = coords[1]
 		response = postAPICollaborator(request.user,lat,lon)
-	#return HttpResponseRedirect('/'+ str(response))
-	return redirect(reverse('logout' , args=(str(response),) ) ) #reverse('logout')
+
+	return redirect(reverse('logout' , args=(str(responseGet),) ) )
 
 def log_out(request, api_response):
 	logout(request)
 	return HttpResponseRedirect('/' + api_response)
-	#return redirect('../')
+
+def loginAPI():
+	payload = {
+		"user_name":"user_django",
+		"password":"123456"
+	}
+	r = settings.SESSION.post(settings.URL_API+"/authenticate" , data=payload )
+	pprint.pprint(r.text)
+	return r.status_code
+
+def getClient():
+	r = settings.SESSION.get(settings.URL_API + "/clientInfo/list")
+	pprint.pprint(r.text)
+	return r.status_code
 
 def postAPICollaborator(user,lat,lon):
-	#pprint.pprint(user.username)
 	payload = {"email":"metacris93@hotmail.com",
 			   "username":user.username,
 			   "fk_provider":"186.3.146.108",
 			   "lat":lat,
 			   "lon":lon}
 	headers = {"content-type": "application/json", "accept": "application/json"}
-	r = requests.post("http://localhost:9000/api/collaborators", data=json.dumps(payload), headers=headers ) # url , data , json, kwargs
+	r = requests.post( settings.URL_API+'/collaborators', data=json.dumps(payload), headers=headers ) # url , data , json, kwargs
 	return 200 if r.status_code == 200 else 400
-	#get_request = requests.get("http://localhost:9000/api/collaborators/")
-	#print(get_request.text)
+
 
