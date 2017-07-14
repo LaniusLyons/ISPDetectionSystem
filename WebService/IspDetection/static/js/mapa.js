@@ -1,8 +1,9 @@
 var map_info, map_users;
+
       function shareContributionLink(latitude,longitude){
         var link = "#";
-        if(latitude && longitude){
-          link = "/login/facebook/?coords="+latitude + "," + longitude;
+        if(latitude && longitude && ispIP && ispName){
+          link = "/login/facebook/?coords="+latitude + "," + longitude + "&ispIP="+ispIP + "&ispName=" + ispName;
         }
         $(".share-class").attr("href", link);
       }
