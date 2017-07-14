@@ -45,6 +45,7 @@ def get_client_ip(request):
 def index(request,api_response=None):
 	print 'index'
 	ip = get_client_ip(request)
+	#delete next line for PROD Server
 	ip = ['186.3.146.133', '10.10.10.32', '170.120.34.65','192.168.0.100']
 	if isinstance(ip, list):
 		isp = [x for x in ip if validateIP(x)]
@@ -58,6 +59,7 @@ def switch(argument):
 		'400':"BAD_STATUS",
 	}
 	return switcher.get(argument,"Nada")
+
 
 def logs(request):
 	dir = settings.BASE_DIR + settings.LOGS_FOLDER + 'ip.logs.txt'
@@ -85,11 +87,13 @@ def login(request):
 	#return HttpResponseRedirect('/'+ str(response))
 	return redirect(reverse('logout' , args=(str(response),) ) ) #reverse('logout')
 
+
 def log_out(request, api_response):
 	print 'logout'
 	logout(request)
 	return HttpResponseRedirect('/' + api_response)
 	#return redirect('../')
+
 
 def postAPICollaborator(user,lat,lon,ispIP,ispName):
 	#pprint.pprint(user.username)
@@ -97,7 +101,6 @@ def postAPICollaborator(user,lat,lon,ispIP,ispName):
 	payload = {"user_name":"user_django","password":"123456"}
 	res = s.post("http://165.227.4.3:3000/authenticate", data=payload)
 	print res.text
-
 	print 'ahora posting'
 	payload = {"email":user.email,
 			   "isp_ip":ispIP,
@@ -109,4 +112,3 @@ def postAPICollaborator(user,lat,lon,ispIP,ispName):
 	return 200 if r.status_code == 200 or r.status_code == 201 else 400
 	#get_request = requests.get("http://localhost:9000/api/collaborators/")
 	#print(get_request.text)
-
