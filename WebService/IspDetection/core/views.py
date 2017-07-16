@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-\
-from _mysql import result
 
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
