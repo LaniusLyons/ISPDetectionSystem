@@ -6,6 +6,8 @@ var map_info, map_users;
           link = "/login/facebook/?coords="+latitude + "," + longitude + "&ispIP="+ispIP + "&ispName=" + ispName;
         }
         $(".share-class").attr("href", link);
+        $("#shareLink").val(link);
+        shareLink = link;
       }
 
        $('a[href="#mapa"]').click(function(e) {

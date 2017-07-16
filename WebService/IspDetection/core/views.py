@@ -19,6 +19,7 @@ def validateIP(ip):
 		return True
 	return False
 
+
 def get_client_ip(request):
 	date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 	x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
@@ -46,10 +47,12 @@ def index(request,api_response=None):
 	print 'index'
 	ip = get_client_ip(request)
 	#delete next line for PROD Server
-	ip = ['181.175.74.217', '10.10.10.32', '170.120.34.65','192.168.0.100']
+	ip = ['186.3.146.133', '10.10.10.32', '170.120.34.65','192.168.0.100']
 	if isinstance(ip, list):
 		isp = [x for x in ip if validateIP(x)]
-		aux = requests.get('http://ip-api.com/json/'+isp[0])
+		aux = getProvider(isp[0])
+		print aux.json()
+	logOutAPI()
 	return render(request,'index.html',{'ispInfo':aux.json(),'ispIp':isp[0], 'response':switch(api_response)})
 
 
@@ -79,40 +82,62 @@ def login(request):
 		lon = coords[1]
 		ispIP = request.session['ispIP']
 		ispName = request.session['ispName']
+		ispUs = None
+		if 'ispUs' in request.session:
+			ispUs = request.session['ispUs']
 		print lat, lon, ispName, ispIP
 		is_authenticated = authenticateAPI()
 		if lat and lon and ispIP and ispName and is_authenticated == 200:
-			response = postAPICollaborator(request.user,lat,lon,ispIP,ispName)
+			response = postAPICollaborator(request.user,lat,lon,ispIP,ispName,ispUs)
 		else:
 			response = 400
 
 	return redirect(reverse('logout' , args=(str(response),) ) )
+
 
 def log_out(request, api_response):
 	print 'logout'
 	logout(request)
 	return HttpResponseRedirect('/' + api_response)
 
+
 def authenticateAPI():
 	payload = {
 		"user_name":"user_django",
 		"password":"123456"
 	}
-	r = settings.SESSION.post(settings.URL_API+"/authenticate" , data=payload )
-	pprint.pprint(r.text)
+	r = settings.SESSION.post(settings.URL_API+'/authenticate' , data=payload )
 	return r.status_code
 
-def getClient():
-	r = settings.SESSION.get(settings.URL_API + "/clientInfo/list")
-	pprint.pprint(r.text)
+
+def getListClient(request):
+	is_authenticated = authenticateAPI()
+	if is_authenticated:
+		r = settings.SESSION.get(settings.URL_API + '/clientInfo/list')
+		return JsonResponse(r.json(),safe=False)
+	return JsonResponse({})
+
+
+def logOutAPI():
+	r = settings.SESSION.get(settings.URL_API + '/signOut')
 	return r.status_code
 
-def postAPICollaborator(user,lat,lon,ispIP,ispName):
+
+def postAPICollaborator(user,lat,lon,ispIP,ispName,ispUs=None):
 	payload = {"email":user.email,
 			   "isp_ip":ispIP,
 			   "isp_name":ispName,
+			   "isp_name_reported":ispUs,
 			   "latitude":lat,
 			   "longitude":lon}
-	r = settings.SESSION.post(settings.URL_API+"/clientInfo/insert", data=payload) # url , data , json, kwargs
-	print r.text
+	r = settings.SESSION.post(settings.URL_API+'/clientInfo/insert', data=payload)
 	return 200 if r.status_code == 200 or r.status_code == 201 else 400
+
+
+def getProvider(providerIp):
+	if providerIp:
+		is_authenticated = authenticateAPI()
+		if is_authenticated:
+			r = settings.SESSION.get(settings.URL_API + '/providers/'+providerIp)
+			return r
+	return None
