@@ -24,7 +24,7 @@
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
 <script type="text/javascript">
-  
+    var shareLink = "";
     var ispIP = "{{ ispInfo.isp }}";
     var ispName = "{{ ispIp }}";
 
@@ -119,48 +119,21 @@
 <script src="{% static 'js/stylemap.js' %}"></script>
 <script src="{% static 'js/mapa.js' %}"></script>
 <script src="{% static 'js/modal.js' %}"></script>
-<!--<script>
-
-    function loadMarkers() {
-        var pos;
-        var markerIsp;
-        $.ajax({
-				type: "GET",
-				url: "/getIsp/",
-				dataType: "json",
-				contentType:"text/plain",
-				success: function (data, status) {
-					for(var index in data.isp)
-					{
-					    pos = {
-                                    lat:data.isp[index].latitud,
-                                    lng:data.isp[index].longitud
-                                  };
-					    /*var info = new google.maps.InfoWindow({
-                            content: ""+data.isp[index].isp
-                        });
-					    info.setPosition(pos);*/
-					    markerIsp = new google.maps.Marker({
-                            position: pos,
-                            map: map_users,
-                            draggable: false,
-                            icon: url_marker
-                        });
-					    console.log(map_users);
-					    /*markerIsp.addListener('click', function() {
-                            info.open(map_users, markerIsp);
-                        });*/
-                    }
-				},
-				error:function () {
-					console.log('Error');
-				}
-			});
-    }
-
-    google.maps.event.addDomListener(window, 'load', loadMarkers);
-</script>-->
 <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCISkw1JtoXe-g3_IKP3iHS_TjHvtaKAQw&callback=initMap"></script> -->
 <script type="text/javascript">if (window.location.hash == '#_=_')window.location.hash = '';</script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#shareBtn").click(function(){
+      var link = shareLink;
+      var reported = $("#isp_reported").val();
+      if(reported != null && reported != ""){
+        link = link + "&ispUs="+reported;
+      }
+      console.log(link);
+      window.location.href = link;
+    });
+  });
+
+</script>
 </body>
 </html>

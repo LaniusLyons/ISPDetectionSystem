@@ -1,12 +1,13 @@
 var map_info, map_users;
 
 	  function shareContributionLink(latitude,longitude){
-		var link = "#";
+		//enlace = "#";
 		if(latitude && longitude && ispIP && ispName){
-		  link = "/login/facebook/?coords="+latitude + "," + longitude + "&ispIP="+ispIP + "&ispName=" + ispName;
+		  shareLink = "/login/facebook/?coords="+latitude + "," + longitude + "&ispIP="+ispIP + "&ispName=" + ispName;
 		}
-		$(".share-class").attr("href", link);
+		$(".share-class").attr("href", shareLink);
 	  }
+
 
 	   $('a[href="#mapa"]').click(function(e) {
 	        console.log(map_users);
@@ -62,8 +63,9 @@ var map_info, map_users;
 		   var latlng = is_permite_ubicacion ? new google.maps.LatLng( position.coords.latitude, position.coords.longitude ) : {lat: 2.1709978999999997, lng: -79.9223592};
 		   var infoOptions = {
 			  zoom:14,
-			  mapTypeId: google.maps.MapTypeId.ROADMAP,
-			   center: latlng,
+			  disableDefaultUI: true,
+			  mapTypeControl: false,
+			  center: latlng,
 			  animation: google.maps.Animation.DROP,
 			  streetViewControl: false
 			};
@@ -71,9 +73,6 @@ var map_info, map_users;
 			  zoom:14,
 			  disableDefaultUI: true,
 			  mapTypeControl: false,
-  /*mapTypeControlOptions: {
-	style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
-  },*/
 			  streetViewControl: false,
 			  center: latlng
 			};
