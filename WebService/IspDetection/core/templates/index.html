@@ -103,11 +103,13 @@
     $("#shareBtn").click(function(){
       console.log("holi");
       var link = shareLink;
-      var reported = $("#isp_reported").val();
-      if(reported != null && reported != ""){
-        link = link + "&ispUs="+reported;
+      if(link != null){
+	    var reported = $("#isp_reported").val();
+	    if(reported != null && reported != ""){
+		    link = link + "&ispUs="+reported;
+	    }
+	    window.location.href = link;
       }
-      window.location.href = link;
     });
   });
 
