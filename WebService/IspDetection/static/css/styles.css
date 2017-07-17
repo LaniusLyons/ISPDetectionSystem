@@ -1,0 +1,50 @@
+.contenedor{
+    margin: 2%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+}
+
+.item-mapa{
+    flex: 1 1 100%;
+}
+
+.item-form{
+    flex: 1 1 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 8px;
+}
+#form-isp{
+    width: 100%;
+}
+
+.form-items{
+    height: 356px;
+    overflow-y: scroll;
+    margin: 0 0 4px 0;
+}
+
+.button-isp{
+    margin: 4px 0 0 4px;
+}
+
+@media screen and (max-width: 600px) {
+    .contenedor{
+        flex-direction: column;
+    }
+
+    .item-mapa{
+        flex: 1 1 100%;
+    }
+
+    .item-form{
+        flex: 1 1 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}

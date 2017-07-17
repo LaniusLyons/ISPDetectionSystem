@@ -11,6 +11,8 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/js/materialize.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2XDKonqjSaAaVAeWqnLX5JdVwBQi-Gsg&amp;libraries=places,geometry&amp;region=ec&amp;language=es"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
 <div id="fb-root"></div>
@@ -51,11 +53,32 @@
                 {% include 'content.html' %}
           </div>
           <div id="mapa" class="col s12">
-                <div class="container">
-                     <div class="row z-depth-4">
-                           <div class="text-center" id="map-users" style="width:100%;height:400px;margin-top: 30px;"></div>
+                     <div class="contenedor">
+                           <div class="item-mapa">
+                               <div class="text-center" id="map-users" style="width:100%;height:400px;"></div>
+                           </div>
+                           <!--<div class="item-form">
+                               <form id="form-isp" action="#">
+                                    <div class="form-items">
+                                            <p>
+                                              <input name="group1" type="radio" id="test1" />
+                                              <label for="test1">TV cable</label>
+                                            </p>
+                                            <p>
+                                              <input name="group1" type="radio" id="test2" />
+                                              <label for="test2">Claro</label>
+                                            </p>
+                                            <p>
+                                              <input name="group1" type="radio" id="test3"  />
+                                              <label for="test3">CNT</label>
+                                            </p>
+                                    </div>
+                                    <button class="button-isp btn waves-effect waves-light" type="submit" name="action">Cargar
+                                        <i class="material-icons right">send</i>
+                                    </button>
+                              </form>
+                           </div>-->
                      </div>
-                </div>
           </div>
           <div id="info" class="col s12">
                 <div class="container">
@@ -96,6 +119,47 @@
 <script src="{% static 'js/stylemap.js' %}"></script>
 <script src="{% static 'js/mapa.js' %}"></script>
 <script src="{% static 'js/modal.js' %}"></script>
+<!--<script>
+
+    function loadMarkers() {
+        var pos;
+        var markerIsp;
+        $.ajax({
+				type: "GET",
+				url: "/getIsp/",
+				dataType: "json",
+				contentType:"text/plain",
+				success: function (data, status) {
+					for(var index in data.isp)
+					{
+					    pos = {
+                                    lat:data.isp[index].latitud,
+                                    lng:data.isp[index].longitud
+                                  };
+					    /*var info = new google.maps.InfoWindow({
+                            content: ""+data.isp[index].isp
+                        });
+					    info.setPosition(pos);*/
+					    markerIsp = new google.maps.Marker({
+                            position: pos,
+                            map: map_users,
+                            draggable: false,
+                            icon: url_marker
+                        });
+					    console.log(map_users);
+					    /*markerIsp.addListener('click', function() {
+                            info.open(map_users, markerIsp);
+                        });*/
+                    }
+				},
+				error:function () {
+					console.log('Error');
+				}
+			});
+    }
+
+    google.maps.event.addDomListener(window, 'load', loadMarkers);
+</script>-->
 <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCISkw1JtoXe-g3_IKP3iHS_TjHvtaKAQw&callback=initMap"></script> -->
 <script type="text/javascript">if (window.location.hash == '#_=_')window.location.hash = '';</script>
 </body>

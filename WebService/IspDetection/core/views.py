@@ -12,6 +12,8 @@ from netaddr import *
 import requests
 import pprint
 import json
+import urllib
+from django.http import JsonResponse
 
 
 def validateIP(ip):
@@ -41,16 +43,24 @@ def get_client_ip(request):
 		f.close()
 	return ip
 
+def authenticateAPI():
+	payload = {
+		"user_name":"user_django",
+		"password":"123456"
+	}
+	r = settings.SESSION.post(settings.URL_API+"/authenticate" , data=payload )
+	return r.status_code
 
 def index(request,api_response=None):
 	print 'index'
+	list_client = None
 	ip = get_client_ip(request)
 	#delete next line for PROD Server
-	ip = ['181.175.74.217', '10.10.10.32', '170.120.34.65','192.168.0.100']
+	ip = ['186.3.146.133' , '181.175.74.217', '10.10.10.32', '170.120.34.65','192.168.0.100']
 	if isinstance(ip, list):
 		isp = [x for x in ip if validateIP(x)]
 		aux = requests.get('http://ip-api.com/json/'+isp[0])
-	return render(request,'index.html',{'ispInfo':aux.json(),'ispIp':isp[0], 'response':switch(api_response)})
+	return render(request,'index.html',{ 'ispInfo':aux.json(),'ispIp':isp[0],'response':switch(api_response) })
 
 
 def switch(argument):
@@ -83,6 +93,7 @@ def login(request):
 		is_authenticated = authenticateAPI()
 		if lat and lon and ispIP and ispName and is_authenticated == 200:
 			response = postAPICollaborator(request.user,lat,lon,ispIP,ispName)
+			#response = getListClient()
 		else:
 			response = 400
 
@@ -93,19 +104,28 @@ def log_out(request, api_response):
 	logout(request)
 	return HttpResponseRedirect('/' + api_response)
 
-def authenticateAPI():
-	payload = {
-		"user_name":"user_django",
-		"password":"123456"
-	}
-	r = settings.SESSION.post(settings.URL_API+"/authenticate" , data=payload )
-	pprint.pprint(r.text)
-	return r.status_code
+def getIspPoints(Json):
+	array = []
+	for isp in Json:
+		dicTemp = {
+			'latitud':isp[u'flat_location'][0],
+			'longitud':isp[u'flat_location'][1],
+			'isp':isp[u'isp_name']
+		}
+		array.append(dicTemp)
+	return array
 
-def getClient():
-	r = settings.SESSION.get(settings.URL_API + "/clientInfo/list")
-	pprint.pprint(r.text)
-	return r.status_code
+def getListClient(request):
+	is_authenticated = authenticateAPI()
+	if request.method == 'GET':
+		if is_authenticated == 200:
+			r = settings.SESSION.get(settings.URL_API + "/clientInfo/list")
+			responseJson = json.loads(r.text)
+			list = getIspPoints(responseJson)
+			return JsonResponse(dict(isp=list))
+		else:
+			return JsonResponse({'mensaje':'nada'})
+
 
 def postAPICollaborator(user,lat,lon,ispIP,ispName):
 	payload = {"email":user.email,
@@ -114,5 +134,4 @@ def postAPICollaborator(user,lat,lon,ispIP,ispName):
 			   "latitude":lat,
 			   "longitude":lon}
 	r = settings.SESSION.post(settings.URL_API+"/clientInfo/insert", data=payload) # url , data , json, kwargs
-	print r.text
 	return 200 if r.status_code == 200 or r.status_code == 201 else 400
