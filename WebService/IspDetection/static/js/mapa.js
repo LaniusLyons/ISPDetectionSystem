@@ -1,11 +1,11 @@
 var map_info, map_users;
 
-	  function shareContributionLink(latitude,longitude){
-		//enlace = "#";
-		if(latitude && longitude && ispIP && ispName){
-		  shareLink = "/login/facebook/?coords="+latitude + "," + longitude + "&ispIP="+ispIP + "&ispName=" + ispName;
+	  function shareContributionLink(lat,lon){
+		if(lat != null && lon != null && ispIP != "" && ispName != ""){
+			latitude = lat;
+			longitude = lon;
+		  	shareLink = "/login/facebook/?coords="+lat + "," + lon + "&ispIP="+ispIP + "&ispName=" + ispName;
 		}
-		$(".share-class").attr("href", shareLink);
 	  }
 
 
@@ -58,9 +58,18 @@ var map_info, map_users;
 			google.maps.event.trigger(myMap, 'resize');
 	   }
 
+	   function handleEvent(event) {
+    		var lat = event.latLng.lat();
+    		var lon = event.latLng.lng();
+    		if(lat != null && lon != null){
+    			latitude = lat;
+				longitude = lon;
+    		}
+		}
+
 	   function showMap(is_permite_ubicacion , position )
 	   {
-		   var latlng = is_permite_ubicacion ? new google.maps.LatLng( position.coords.latitude, position.coords.longitude ) : {lat: 2.1709978999999997, lng: -79.9223592};
+		   var latlng = is_permite_ubicacion ? new google.maps.LatLng( position.coords.latitude, position.coords.longitude ) : {lat: -2.1709978999999997, lng: -79.9223592};
 		   var infoOptions = {
 			  zoom:14,
 			  disableDefaultUI: true,
@@ -92,6 +101,8 @@ var map_info, map_users;
 					draggable: true,
 					icon: url_marker
 				});
+				marker.addListener('drag', handleEvent);
+    			marker.addListener('dragend', handleEvent);
 			}else{
                 console.log("no ha aceptado la ubicacion");
 			}

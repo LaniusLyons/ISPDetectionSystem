@@ -43,6 +43,7 @@ def get_client_ip(request):
 		f.close()
 	return ip
 
+
 def index(request,api_response=None):
 	print 'index'
 	list_client = None
@@ -114,6 +115,7 @@ def getIspPoints(Json):
 		array.append(dicTemp)
 	return array
 
+
 def getListClient(request):
 	is_authenticated = authenticateAPI()
 	if request.method == 'GET':
@@ -125,6 +127,7 @@ def getListClient(request):
 		else:
 			return JsonResponse({'mensaje':'nada'})
 
+
 def authenticateAPI():
 	payload = {
 		"user_name":"user_django",
@@ -133,9 +136,11 @@ def authenticateAPI():
 	r = settings.SESSION.post(settings.URL_API+'/authenticate' , data=payload )
 	return r.status_code
 
+
 def logOutAPI():
 	r = settings.SESSION.get(settings.URL_API + '/signOut')
 	return r.status_code
+
 
 def postAPICollaborator(user,lat,lon,ispIP,ispName,ispUs=None):
 	payload = {"email":user.email,
