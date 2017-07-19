@@ -133,8 +133,6 @@ URL_API = 'http://localhost:3000'#'http://165.227.4.3:3000'
 #URL_API = 'http://165.227.4.3:3000'
 
 
-SESSION = requests.session()
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
