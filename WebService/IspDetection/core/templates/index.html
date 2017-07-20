@@ -3,117 +3,118 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-    <title>{% block title %} IspFinderProject {% endblock %}</title>
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/css/materialize.min.css">
+		<title>{% block title %} IspFinderProject {% endblock %}</title>
+		<meta name="viewport"
+					content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/css/materialize.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/js/materialize.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2XDKonqjSaAaVAeWqnLX5JdVwBQi-Gsg&amp;libraries=places,geometry&amp;region=ec&amp;language=es"></script>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/js/materialize.min.js"></script>
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2XDKonqjSaAaVAeWqnLX5JdVwBQi-Gsg&amp;libraries=places,geometry&amp;region=ec&amp;language=es"></script>
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
 <div id="fb-root"></div>
 <script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v2.9&appId=839343722883925";
-  fjs.parentNode.insertBefore(js, fjs);
+	var js, fjs = d.getElementsByTagName(s)[0];
+	if (d.getElementById(id)) return;
+	js = d.createElement(s); js.id = id;
+	js.src = "//connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v2.9&appId=839343722883925";
+	fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
 <script type="text/javascript">
     var shareLink = "";
-    var ispIP = "{{ ispIp }}";
-    var ispName = "{{ ispInfo.isp }}";
-
+    var ispIP = "{{ ispIp|default:"" }}";
+	var ispName = "{{ ispInfo.isp|default:"" }}";
+	var latitude = null;
+	var longitude = null;
 </script>
 
 <div class="container-fluid">
-    <header>
-        <div class="row">
-              <nav class="nav-extended blue">
-                    <div class="nav-wrapper">
-                            <a href="#" class="brand-logo center">IspFinderProject</a>
-                    </div>
-                    <div class="nav-content">
-                        <ul class="tabs tabs-transparent">
-                            <li class="tab"><a class="active" href="#consultar">Consultar</a></li>
-                            <li class="tab"><a href="#mapa">Mapa</a></li>
-                            <li class="tab"><a href="#info">Informaci&oacute;n</a></li>
-                        </ul>
-                    </div>
-              </nav>
-        </div>
-    </header>
+		<header>
+				<div class="row">
+							<nav class="nav-extended blue">
+										<div class="nav-wrapper">
+														<a href="#" class="brand-logo center">IspFinderProject</a>
+										</div>
+										<div class="nav-content">
+												<ul class="tabs tabs-transparent">
+														<li class="tab"><a class="active" href="#consultar">Consultar</a></li>
+														<li class="tab"><a href="#mapa">Mapa</a></li>
+														<li class="tab"><a href="#info">Informaci&oacute;n</a></li>
+												</ul>
+										</div>
+							</nav>
+				</div>
+		</header>
 
-    <main>
-          <div id="consultar" class="col s12">
-                {% include 'content.html' %}
-          </div>
-          <div id="mapa" class="col s12">
-                     <div class="contenedor">
-                           <div class="item-mapa">
-                               <div class="text-center" id="map-users" style="width:100%;height:400px;"></div>
-                           </div>
-                           <!--<div class="item-form">
-                               <form id="form-isp" action="#">
-                                    <div class="form-items">
-                                            <p>
-                                              <input name="group1" type="radio" id="test1" />
-                                              <label for="test1">TV cable</label>
-                                            </p>
-                                            <p>
-                                              <input name="group1" type="radio" id="test2" />
-                                              <label for="test2">Claro</label>
-                                            </p>
-                                            <p>
-                                              <input name="group1" type="radio" id="test3"  />
-                                              <label for="test3">CNT</label>
-                                            </p>
-                                    </div>
-                                    <button class="button-isp btn waves-effect waves-light" type="submit" name="action">Cargar
-                                        <i class="material-icons right">send</i>
-                                    </button>
-                              </form>
-                           </div>-->
-                     </div>
-          </div>
-          <div id="info" class="col s12">
-                <div class="container">
-                    <div class="row">
-                        <div class="card">
-                            <div class="card-content z-depth-4">
-                              <!--<span class="card-title activator grey-text text-darken-4">Card Title<i class="material-icons right">more_vert</i></span>-->
-                              <p class="flow-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias at corporis delectus facilis itaque minus, nulla odio quidem reiciendis voluptates. Architecto deserunt, dolores error est fugiat impedit libero officiis praesentium!</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-          </div>
-    </main>
-    {% include 'modal.html' %}
+		<main>
+					<div id="consultar" class="col s12">
+								{% include 'content.html' %}
+					</div>
+					<div id="mapa" class="col s12">
+										 <div class="contenedor">
+													 <div class="item-mapa">
+															 <div class="text-center" id="map-users" style="width:100%;height:600px;"></div>
+													 </div>
+													 <!--<div class="item-form">
+															 <form id="form-isp" action="#">
+																		<div class="form-items">
+																						<p>
+																							<input name="group1" type="radio" id="test1" />
+																							<label for="test1">TV cable</label>
+																						</p>
+																						<p>
+																							<input name="group1" type="radio" id="test2" />
+																							<label for="test2">Claro</label>
+																						</p>
+																						<p>
+																							<input name="group1" type="radio" id="test3"  />
+																							<label for="test3">CNT</label>
+																						</p>
+																		</div>
+																		<button class="button-isp btn waves-effect waves-light" type="submit" name="action">Cargar
+																				<i class="material-icons right">send</i>
+																		</button>
+															</form>
+													 </div>-->
+										 </div>
+					</div>
+					<div id="info" class="col s12">
+								<div class="container">
+										<div class="row">
+												<div class="card">
+														<div class="card-content z-depth-4">
+															<!--<span class="card-title activator grey-text text-darken-4">Card Title<i class="material-icons right">more_vert</i></span>-->
+															<p class="flow-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias at corporis delectus facilis itaque minus, nulla odio quidem reiciendis voluptates. Architecto deserunt, dolores error est fugiat impedit libero officiis praesentium!</p>
+														</div>
+												</div>
+										</div>
+								</div>
+					</div>
+		</main>
+		{% include 'modal.html' %}
 </div>
 <script type="application/javascript">
-    var url_marker = "{% static 'img/location.png' %}";
-    var is_compartir_facebook = "{{ response }}";
-    var toast_message;
-    var showToastMessage;
-    if(is_compartir_facebook == "GOOD_STATUS")
-    {
-        toast_message = $('<span>Gracias por compartir tu informacion</span>');
-        showToastMessage = false;
-        Materialize.toast(toast_message, 5000, 'rounded');
-    }else if(is_compartir_facebook == "BAD_STATUS")
-    {
-        toast_message = $('<span>Error al compartir tu informacion</span>');
-        showToastMessage = true;
-        Materialize.toast(toast_message, 5000, 'rounded');
-    }else
-    {
-        showToastMessage = true;
-    }
+		var url_marker = "{% static 'img/location.png' %}";
+		var is_compartir_facebook = "{{ response }}";
+		var toast_message;
+		var showToastMessage;
+		if(is_compartir_facebook == "GOOD_STATUS")
+		{
+				toast_message = $('<span>Gracias por compartir tu informacion</span>');
+				showToastMessage = false;
+				Materialize.toast(toast_message, 5000, 'rounded');
+		}else if(is_compartir_facebook == "BAD_STATUS")
+		{
+				toast_message = $('<span>Error al compartir tu informacion</span>');
+				showToastMessage = true;
+				Materialize.toast(toast_message, 5000, 'rounded');
+		}else
+		{
+				showToastMessage = true;
+		}
 
 </script>
 <script src="{% static 'js/stylemap.js' %}"></script>
@@ -122,18 +123,22 @@
 <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCISkw1JtoXe-g3_IKP3iHS_TjHvtaKAQw&callback=initMap"></script> -->
 <script type="text/javascript">if (window.location.hash == '#_=_')window.location.hash = '';</script>
 <script type="text/javascript">
-  $(document).ready(function(){
-    $("#shareBtn").click(function(){
-      var link = shareLink;
-      if(link != null){
-	    var reported = $("#isp_reported").val();
-	    if(reported != null && reported != ""){
-		    link = link + "&ispUs="+reported;
-	    }
-	    window.location.href = link;
-      }
-    });
-  });
+	$(document).ready(function(){
+		$("#shareBtn").click(function(){
+			var link = shareLink;
+			if(link != null){
+				if(latitude != null && longitude != null && ispIP != "" && ispName != ""){
+					var reported = $("#isp_reported").val();
+					link = "/login/facebook/?coords="+latitude + "," + longitude + "&ispIP="+ispIP + "&ispName=" + ispName;
+					if(reported != null && reported != " "){
+						link = link + "&ispUs="+reported;
+					}
+				}
+				console.log(link);
+				window.location.href = link;
+			}
+		});
+	});
 
 </script>
 </body>
