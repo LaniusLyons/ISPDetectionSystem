@@ -24,8 +24,8 @@
 	fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
 <script type="text/javascript">
-    var shareLink = "";
-    var ispIP = "{{ ispIp|default:"" }}";
+	var shareLink = "";
+	var ispIP = "{{ ispIp|default:"" }}";
 	var ispName = "{{ ispInfo.isp|default:"" }}";
 	var latitude = null;
 	var longitude = null;
@@ -55,30 +55,12 @@
 					</div>
 					<div id="mapa" class="col s12">
 										 <div class="contenedor">
-													 <div class="item-mapa">
-															 <div class="text-center" id="map-users" style="width:100%;height:600px;"></div>
-													 </div>
-													 <!--<div class="item-form">
-															 <form id="form-isp" action="#">
-																		<div class="form-items">
-																						<p>
-																							<input name="group1" type="radio" id="test1" />
-																							<label for="test1">TV cable</label>
-																						</p>
-																						<p>
-																							<input name="group1" type="radio" id="test2" />
-																							<label for="test2">Claro</label>
-																						</p>
-																						<p>
-																							<input name="group1" type="radio" id="test3"  />
-																							<label for="test3">CNT</label>
-																						</p>
-																		</div>
-																		<button class="button-isp btn waves-effect waves-light" type="submit" name="action">Cargar
-																				<i class="material-icons right">send</i>
-																		</button>
-															</form>
-													 </div>-->
+											   <div class="item-mapa z-depth-4" >
+															 <div class="text-center" id="map-users" style="width:100%;height:500px;"></div>
+											   </div>
+											   <div id="isp-markers" class="z-depth-4">
+												   <ul></ul>
+											   </div>
 										 </div>
 					</div>
 					<div id="info" class="col s12">

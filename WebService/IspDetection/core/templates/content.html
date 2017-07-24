@@ -10,14 +10,14 @@
               <div class="text-center" id="map-info" style="width:100%;height:360px;"></div>
         </div>
         <div class="col s12 m6">
-              <div class="card light-blue lighten-3">
+              <div class="card light-blue lighten-3" style="margin-top: 0px">
                     <div class="card-content black-text">
                          <span class="card-title" style="font-family: 'Arial Black';"><h5>Red WiFi Local</h5></span>
                          <p class="flow-text">Proveedor: {{ ispInfo.isp|default:'TU Proveedor'}}</p>
                          <p class="flow-text">IP: {{ ispIp|default:'Desconocido'}}</p>
                          <p class="flow-text">Pa&iacute;s: {{ ispInfo.country|default:'Desconocido'}}</p>
                          <p class="flow-text">Ciudad: {{ ispInfo.city|default:'Desconocido'}}</p>
-                         <p class="flow-text">latitud/longitud: {{ ispInfo.lat|default:'Desconocido'}} / {{ ispInfo.lon|default:'Desconocido'}}</p>
+                         <!--<p class="flow-text">latitud/longitud: {{ ispInfo.lat|default:'Desconocido'}} / {{ ispInfo.lon|default:'Desconocido'}}</p>-->
                     </div>
                     <div class="card-content black-text">
                       <p class="flow-text" style="font-size: 125%;">

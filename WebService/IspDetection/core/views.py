@@ -49,12 +49,11 @@ def index(request,api_response=None):
 	list_client = None
 	ip = get_client_ip(request)
 	#delete next line for PROD Server
-	ip = ['186.3.146.133' , '181.175.74.217', '10.10.10.32', '170.120.34.65','192.168.0.100']
+	ip = ['200.126.1.143','103.11.228.8','186.3.146.133','10.10.10.32','170.120.34.65','192.168.0.100']
 	if isinstance(ip, list):
 		isp = [x for x in ip if validateIP(x)]
 		aux = getProvider(isp[0])
-		print aux.json()
-	logOutAPI()
+
 	return render(request,'index.html',{'ispInfo':aux.json(),'ispIp':isp[0], 'response':switch(api_response)})
 
 
@@ -76,7 +75,6 @@ def logs(request):
 
 def login(request):
 	print 'login'
-	print request.session['coords']
 	response = None
 	if request.user.is_authenticated():
 		coords = request.session['coords'].split(',')
@@ -87,11 +85,10 @@ def login(request):
 		ispUs = None
 		if 'ispUs' in request.session:
 			ispUs = request.session['ispUs']
-		print lat, lon, ispName, ispIP
-		is_authenticated = authenticateAPI()
-		if lat and lon and ispIP and ispName and is_authenticated == 200:
-			#response = getListClient()
-			response = postAPICollaborator(request.user,lat,lon,ispIP,ispName,ispUs)
+
+		auth_token = authenticateAPI()
+		if lat and lon and ispIP and ispName and auth_token:
+			response = postAPICollaborator(request.user,lat,lon,ispIP,ispName,auth_token,ispUs)
 		else:
 			response = 400
 
@@ -107,23 +104,33 @@ def log_out(request, api_response):
 def getIspPoints(Json):
 	array = []
 	for isp in Json:
-		dicTemp = {
+		dict = {
 			'latitud':isp[u'flat_location'][0],
 			'longitud':isp[u'flat_location'][1],
 			'isp':isp[u'isp_name']
 		}
-		array.append(dicTemp)
+		array.append(dict)
 	return array
 
+def getColorMarker(Markers):
+	dictionary = {}
+	i = 0
+	for marker in Markers:
+		if marker[u'isp_name'] not in dictionary:
+			dictionary[marker[u'isp_name']] = settings.COLORS[i]
+			i = i + 1
+	return dictionary
 
 def getListClient(request):
-	is_authenticated = authenticateAPI()
+	auth_token = authenticateAPI()
 	if request.method == 'GET':
-		if is_authenticated == 200:
-			r = settings.SESSION.get(settings.URL_API + "/clientInfo/list")
+		if auth_token:
+			headers = {'x-access-token': auth_token}
+			r = requests.get(settings.URL_API + "/clientInfo/list",headers=headers)
 			responseJson = json.loads(r.text)
 			list = getIspPoints(responseJson)
-			return JsonResponse(dict(isp=list))
+			leyenda = getColorMarker(responseJson)
+			return JsonResponse(dict(isp=list,leyenda=leyenda))
 		else:
 			return JsonResponse({'mensaje':'nada'})
 
@@ -133,32 +140,34 @@ def authenticateAPI():
 		"user_name":"user_django",
 		"password":"123456"
 	}
-	r = settings.SESSION.post(settings.URL_API+'/authenticate' , data=payload )
-	return r.status_code
+	r = requests.post(settings.URL_API+'/authenticate' , data=payload )
+	if r.status_code == 200:
+		return r.json()['token']
+	return None
 
 
 def logOutAPI():
-	r = settings.SESSION.get(settings.URL_API + '/signOut')
+	r = requests.get(settings.URL_API + '/signOut')
 	return r.status_code
 
 
-def postAPICollaborator(user,lat,lon,ispIP,ispName,ispUs=None):
+def postAPICollaborator(user,lat,lon,ispIP,ispName,auth_token,ispUs=None):
 	payload = {"email":user.email,
-			   "isp_ip":ispIP,
-			   "isp_name":ispName,
-			   "isp_name_reported":ispUs,
-			   "latitude":lat,
-			   "longitude":lon}
-
-	r = settings.SESSION.post(settings.URL_API+'/clientInfo/insert', data=payload)
+				"isp_ip":ispIP,
+				"isp_name":ispName,
+				"isp_name_reported":ispUs,
+				"latitude":lat,
+				"longitude":lon}
+	headers = {'x-access-token': auth_token}
+	r = requests.post(settings.URL_API+'/clientInfo/insert', data=payload,headers=headers)
 	return 200 if r.status_code == 200 or r.status_code == 201 else 400
 
 
 def getProvider(providerIp):
 	if providerIp:
-		is_authenticated = authenticateAPI()
-		if is_authenticated:
-			r = settings.SESSION.get(settings.URL_API + '/providers/'+providerIp)
-			print r
+		auth_token = authenticateAPI()
+		if auth_token:
+			headers = {'x-access-token': auth_token}
+			r = requests.get(settings.URL_API + '/providers/'+providerIp,headers=headers)
 			return r
 	return None

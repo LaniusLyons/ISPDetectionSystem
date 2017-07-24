@@ -10,76 +10,88 @@ var map_info, map_users;
 
 
 	   $('a[href="#mapa"]').click(function(e) {
-	        var pos;
-            var markerIsp;
-            var info;
+			var pos;
+			var markerIsp;
+			var info;
 
-            $.ajax({
-                    type: "GET",
-                    url: "/getIsp/",
-                    dataType: "json",
-                    contentType:"text/plain",
-                    success: function (data, status) {
-                        for(var index in data.isp)
-                        {
-                            pos = {
-                                lat:data.isp[index].latitud,
-                                lng:data.isp[index].longitud
-                            };
+			$.ajax({
+					type: "GET",
+					url: "/getIsp/",
+					dataType: "json",
+					contentType:"text/plain",
+					success: function (data, status) {
+						let url = "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|";
+						if( $('#isp-markers ul').children().length <= 0 )
+						{
+							for(let marker in data.leyenda)
+							{
+								let j = marker.replace(/ /g, '');
+								$('#isp-markers ul').append("<li><i id='"+j+"'></i>  <span>"+marker+"</span></li>");
+								$("#isp-markers ul li i#" + j).css("content","url("+url+data.leyenda[marker]+")");
+							}
+						}
+						for(let index in data.isp)
+						{
+							pos = {
+								lat:data.isp[index].latitud,
+								lng:data.isp[index].longitud
+							};
+							let pinImage =  new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + data.leyenda[data.isp[index].isp],
+											new google.maps.Size(21, 34),
+											new google.maps.Point(0,0),
+											new google.maps.Point(10, 34));
+							markerIsp = new google.maps.Marker({
+								position: pos,
+								map: map_users,
+								draggable: false,
+								icon: pinImage
+							});
 
-                            markerIsp = new google.maps.Marker({
-                                position: pos,
-                                map: map_users,
-                                draggable: false,
-                                icon: url_marker
-                            });
-
-                            (function(marker, ispName) {
-                                // add click event
-                                google.maps.event.addListener(marker, 'click', function() {
-                                    infowindow = new google.maps.InfoWindow({
-                                        content: ispName
-                                    });
-                                    infowindow.open(map_users, marker);
-                                });
-                            })(markerIsp, data.isp[index].isp);
-                        }
-                    },
-                    error:function () {
-                        console.log('Error');
-                    }
-                });
-		    setTimeout(initialise, 500);
+							(function(marker, ispName) {
+								// add click event
+								google.maps.event.addListener(marker, 'click', function() {
+									infowindow = new google.maps.InfoWindow({
+										content: ispName
+									});
+									infowindow.open(map_users, marker);
+								});
+							})(markerIsp, data.isp[index].isp);
+						}
+					},
+					error:function () {
+						console.log('Error');
+					}
+				});
+			setTimeout(initialise, 500);
 	   });
 
 	   function initialise() {
-			var myMap = document.getElementById('map-users');
+			let myMap = document.getElementById('map-users');
 			google.maps.event.trigger(myMap, 'resize');
 	   }
 
 	   function handleEvent(event) {
-    		var lat = event.latLng.lat();
-    		var lon = event.latLng.lng();
-    		if(lat != null && lon != null){
-    			latitude = lat;
+			let lat = event.latLng.lat();
+			let lon = event.latLng.lng();
+			if(lat != null && lon != null){
+				latitude = lat;
 				longitude = lon;
-    		}
+			}
 		}
 
 	   function showMap(is_permite_ubicacion , position )
 	   {
-		   var latlng = is_permite_ubicacion ? new google.maps.LatLng( position.coords.latitude, position.coords.longitude ) : {lat: -2.1709978999999997, lng: -79.9223592};
-		   var infoOptions = {
+		   let latlng = is_permite_ubicacion ? new google.maps.LatLng( position.coords.latitude, position.coords.longitude ) : {lat: -2.1709978999999997, lng: -79.9223592};
+		   let infoOptions = {
 			  zoom:14,
-			  disableDefaultUI: true,
+			  disableDefaultUI: false,
 			  mapTypeControl: false,
 			  center: latlng,
-			  animation: google.maps.Animation.DROP,
 			  streetViewControl: false
-			};
-			var myOptions = {
+		   };
+		   let myOptions = {
 			  zoom:14,
-			  disableDefaultUI: true,
+			  disableDefaultUI: false,
 			  mapTypeControl: false,
 			  streetViewControl: false,
 			  center: latlng
@@ -94,16 +106,16 @@ var map_info, map_users;
 			{
 				shareContributionLink(position.coords.latitude,position.coords.longitude);
 				showToast(showToastMessage);
-				var marker = new google.maps.Marker({
+				let marker = new google.maps.Marker({
 					position: latlng,
 					map: map_info,
 					draggable: true,
 					icon: url_marker
-				});
+					});
 				marker.addListener('drag', handleEvent);
-    			marker.addListener('dragend', handleEvent);
+				marker.addListener('dragend', handleEvent);
 			}else{
-                console.log("no ha aceptado la ubicacion");
+				console.log("no ha aceptado la ubicacion");
 			}
 	   }
 

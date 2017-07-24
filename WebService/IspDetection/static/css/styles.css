@@ -7,7 +7,16 @@
 }
 
 .item-mapa{
-    flex: 1 1 100%;
+    flex: 1 1 80%;
+}
+
+#isp-markers{
+    border: 1px solid black;
+    flex: 1 1 20%;
+    display: flex;
+    justify-content: center;
+    height: 500px;
+    background-color: white;
 }
 
 .item-form{
@@ -17,7 +26,7 @@
     justify-content: center;
     margin-left: 8px;
 }
-#form-isp{
+/*#form-isp{
     width: 100%;
 }
 
@@ -25,7 +34,7 @@
     height: 356px;
     overflow-y: scroll;
     margin: 0 0 4px 0;
-}
+}*/
 
 .button-isp{
     margin: 4px 0 0 4px;
