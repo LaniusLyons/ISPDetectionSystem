@@ -45,7 +45,6 @@ def get_client_ip(request):
 
 
 def index(request,api_response=None):
-	print 'index'
 	list_client = None
 	ip = get_client_ip(request)
 	#delete next line for PROD Server
@@ -74,7 +73,6 @@ def logs(request):
 
 
 def login(request):
-	print 'login'
 	response = None
 	if request.user.is_authenticated():
 		coords = request.session['coords'].split(',')
@@ -96,7 +94,6 @@ def login(request):
 
 
 def log_out(request, api_response):
-	print 'logout'
 	logout(request)
 	return HttpResponseRedirect('/' + api_response)
 
@@ -168,6 +165,7 @@ def getProvider(providerIp):
 		auth_token = authenticateAPI()
 		if auth_token:
 			headers = {'x-access-token': auth_token}
-			r = requests.get(settings.URL_API + '/providers/'+providerIp,headers=headers)
+			payload = {'provider': providerIp}
+			r = requests.get(settings.URL_API + '/providers/',params=payload,headers=headers)
 			return r
 	return None
