@@ -113,8 +113,8 @@ def login(request):
 			response = 400
 	else:
 		coords = request.GET.get('coords',None).split(',')
-		lat = coords[0]
-		lon = coords[1]
+		lat = coords[1]
+		lon = coords[0]
 		ispIP = request.GET.get('ispIp',None)
 		ispName = request.GET.get('ispName',None)
 		ispUs = request.GET.get('ispUs',None)
