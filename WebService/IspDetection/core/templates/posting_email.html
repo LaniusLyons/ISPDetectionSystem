@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+<p>Enviando email de colaboracion desde <strong>IspFinderProject</strong></p>
+<p>
+	<label>Email colaborador:</label>{{ email|default:'Anónimo' }} <br>
+	<label>Latitud:</label>{{ lat|default:' '  }} <br>
+	<label>Longitud:</label>{{ lon|default:' '  }} <br>
+	<label>ISP Ip:</label>{{ ispIP|default:' '  }} <br>
+	<label>ISP Nombre:</label>{{ ispName|default:' '  }} <br>
+	<label>ISP Reportado:</label>{{ ispUs|default:'Ninguno' }} <br>
+</p>
+</body>
+</html>

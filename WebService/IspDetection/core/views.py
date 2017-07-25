@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-\
-
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.core.urlresolvers import reverse
@@ -13,6 +13,28 @@ import pprint
 import json
 import urllib
 from django.http import JsonResponse
+import django_smtp_ssl
+from django.core.mail import EmailMultiAlternatives
+from django.template import Context
+from django.template.loader import get_template
+
+def send_email(email_to,subject,data):
+	print 'enviando'
+	from_email = 'IspFinderProject <'+settings.DEFAULT_FROM_EMAIL+'>'
+	template = get_template('posting_email.html')
+	context = Context(data)
+	content = template.render(context)
+
+	email = EmailMultiAlternatives(subject, None, from_email,email_to)
+	email.attach_alternative(content, "text/html")
+	try:
+		email.send()
+		print 'envio email'
+		return True
+	except Exception as e:
+		print e
+
+	return False
 
 
 def validateIP(ip):
@@ -90,8 +112,6 @@ def login(request):
 		else:
 			response = 400
 	else:
-		print 'holi'
-		print request.GET
 		coords = request.GET.get('coords',None).split(',')
 		lat = coords[0]
 		lon = coords[1]
@@ -99,11 +119,14 @@ def login(request):
 		ispName = request.GET.get('ispName',None)
 		ispUs = request.GET.get('ispUs',None)
 		email = request.GET.get('email',None)
-		print lat, lon, ispUs, ispName, ispUs, email
 
 		auth_token = authenticateAPI()
 		if lat and lon and ispIP and ispName and auth_token:
 			response = postAPICollaborator(lat,lon,ispIP,ispName,auth_token,email,ispUs)
+			admin = User.objects.all().filter(is_superuser=True).first()
+			if admin:
+				data = {'lat':lat,'lon':lon,'ispIP':ispIP,'ispName':ispName,'email':email,'ispUs':ispUs}
+				send_email([admin.email],subject='Compartiendo informacion desde IspFinderProject',data=data)
 		else:
 			response = 400
 
@@ -187,3 +210,6 @@ def getProvider(providerIp):
 			r = requests.get(settings.URL_API + '/providers/',params=payload,headers=headers)
 			return r
 	return None
+
+
+
