@@ -31,9 +31,34 @@
                       </div>
                     </div>
 
-                    <div class="card-action">
+                    <!--<div class="card-action">
                         <input type="hidden" name="shareLink" id="shareLink">
                         <a class="waves-effect waves-light btn-large yellow-text" id="shareBtn">Enviar con Facebook</a>
+                    </div>-->
+
+                    <div class="card-action">
+                        
+                      <ul class="collapsible" data-collapsible="accordion">
+                        <li>
+                          <div class="collapsible-header teal lighten-1"><a class="yellow-text">Compartir con email</a></div>
+                          <div class="collapsible-body white">
+                                <div class="row">
+                                  <div class="col s12">
+                                    <div class="input-field inline">
+                                      <input id="email" type="email" name="email" maxlength="75">
+                                      <label for="email">Email</label>
+                                      <p id="errorMessage" class="red-text"></p>
+                                      <a class="btn waves-effect waves-light" id="shareBtnWithEmail"><i class="material-icons right">send</i>Enviar</a>
+                                    </div>
+                                  </div>
+                                </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="collapsible-header teal lighten-1"><a class="yellow-text" id="shareBtnWithNoEmail">Compartir de forma An&oacute;nima</a></div>
+                        </li>
+                      </ul>
+
                     </div>
                   <!-- <br>
                        <div class="fb-login-button" data-max-rows="1" data-size="medium" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false" onclick=""></div> -->
