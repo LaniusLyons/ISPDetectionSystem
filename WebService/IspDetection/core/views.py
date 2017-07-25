@@ -76,8 +76,8 @@ def login(request):
 	response = None
 	if request.user.is_authenticated():
 		coords = request.session['coords'].split(',')
-		lat = coords[0]
-		lon = coords[1]
+		lat = coords[1]
+		lon = coords[0]
 		ispIP = request.session['ispIP']
 		ispName = request.session['ispName']
 		ispUs = None
