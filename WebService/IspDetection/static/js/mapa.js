@@ -4,7 +4,7 @@ var map_info, map_users;
 				if(lat != null && lon != null && ispIP != "" && ispName != ""){
 					latitude = lat;
 					longitude = lon;
-					shareLink = "/login/facebook/?coords="+lat + "," + lon + "&ispIP="+ispIP + "&ispName=" + ispName;
+					shareLink = "/posting/?coords="+lat + "," + lon + "&ispIP="+ispIP + "&ispName=" + ispName;
 				}
 		  }
 

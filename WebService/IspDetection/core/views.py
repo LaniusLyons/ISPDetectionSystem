@@ -48,7 +48,7 @@ def index(request,api_response=None):
 	list_client = None
 	ip = get_client_ip(request)
 	#delete next line for PROD Server
-	ip = ['200.126.1.143','103.11.228.8','186.3.146.133','10.10.10.32','170.120.34.65','192.168.0.100']
+	ip = ['186.3.146.133','200.126.1.143','103.11.228.8','10.10.10.32','170.120.34.65','192.168.0.100']
 	if isinstance(ip, list):
 		isp = [x for x in ip if validateIP(x)]
 		aux = getProvider(isp[0])
@@ -86,9 +86,27 @@ def login(request):
 
 		auth_token = authenticateAPI()
 		if lat and lon and ispIP and ispName and auth_token:
-			response = postAPICollaborator(request.user,lat,lon,ispIP,ispName,auth_token,ispUs)
+			response = postAPICollaborator(lat,lon,ispIP,ispName,auth_token,request.user.email,ispUs)
 		else:
 			response = 400
+	else:
+		print 'holi'
+		print request.GET
+		coords = request.GET.get('coords',None).split(',')
+		lat = coords[0]
+		lon = coords[1]
+		ispIP = request.GET.get('ispIp',None)
+		ispName = request.GET.get('ispName',None)
+		ispUs = request.GET.get('ispUs',None)
+		email = request.GET.get('email',None)
+		print lat, lon, ispUs, ispName, ispUs, email
+
+		auth_token = authenticateAPI()
+		if lat and lon and ispIP and ispName and auth_token:
+			response = postAPICollaborator(lat,lon,ispIP,ispName,auth_token,email,ispUs)
+		else:
+			response = 400
+
 
 	return redirect(reverse('logout' , args=(str(response),) ) )
 
@@ -148,8 +166,8 @@ def logOutAPI():
 	return r.status_code
 
 
-def postAPICollaborator(user,lat,lon,ispIP,ispName,auth_token,ispUs=None):
-	payload = {"email":user.email,
+def postAPICollaborator(lat,lon,ispIP,ispName,auth_token,email=None,ispUs=None):
+	payload = {"email":email,
 				"isp_ip":ispIP,
 				"isp_name":ispName,
 				"isp_name_reported":ispUs,

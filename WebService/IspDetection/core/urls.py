@@ -8,6 +8,8 @@ urlpatterns = [
 	url(r'^logout/(?P<api_response>\w{0,3}|)[/]?$',views.log_out, name='logout'),
     url(r'^getIsp/$', views.getListClient, name='getListClient'),
 
+    url(r'^posting[/]$', views.login, name='posting'),
+
 	#url(r'^complete/facebook/$',views.index, name='index'),
 	 
 ]
