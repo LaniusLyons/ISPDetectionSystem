@@ -26,6 +26,7 @@ SECRET_KEY = 'y04sps&l+7e%u0svsww+3kef+4a97*n7!s#^qh9s#5jty9#6ax'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
 ALLOWED_HOSTS = ['*']
 
 
@@ -178,14 +179,14 @@ AUTHENTICATION_BACKENDS = (
 		'django.contrib.auth.backends.ModelBackend',
 	)
 
-LOGIN_URL = '/login/'
-LOGOUT_URL = '/logout/'
-LOGIN_REDIRECT_URL = '/login/'
+#LOGIN_URL = '/login/'
+#LOGOUT_URL = '/logout/'
+#LOGIN_REDIRECT_URL = '/login/'
 
 
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/login/'
-SOCIAL_AUTH_LOGIN_ERROR_URL = '/'
-SOCIAL_AUTH_RAISE_EXCEPTIONS = False
+#SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/login/'
+#SOCIAL_AUTH_LOGIN_ERROR_URL = '/'
+#SOCIAL_AUTH_RAISE_EXCEPTIONS = False
 SOCIAL_AUTH_FIELDS_STORED_IN_SESSION = ['coords','ispIP','ispName','ispUs']
 SOCIAL_AUTH_USER_MODEL = 'core.Collaborator'
 SOCIAL_AUTH_FACEBOOK_KEY = '839343722883925'

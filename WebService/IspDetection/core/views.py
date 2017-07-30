@@ -15,7 +15,7 @@ import urllib
 from django.http import JsonResponse
 import django_smtp_ssl
 from django.core.mail import EmailMultiAlternatives
-from django.template import Context
+from django.template import Context, loader
 from django.template.loader import get_template
 
 def send_email(email_to,subject,data):
@@ -210,6 +210,13 @@ def getProvider(providerIp):
 			r = requests.get(settings.URL_API + '/providers/',params=payload,headers=headers)
 			return r
 	return None
+
+
+def handlerError404(request):
+	return render(request, '404.html',status=404)
+
+def handlerError500(request):
+	return render(request, '500.html',status=500)
 
 
 
