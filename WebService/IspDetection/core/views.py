@@ -138,26 +138,27 @@ def log_out(request, api_response):
 	logout(request)
 	return HttpResponseRedirect('/' + api_response)
 
+def hasNumbers(String):
+	return any( char.isdigit() for char in String )
 
 def getIspPoints(Json):
 	array = []
-	for isp in Json:
-		dict = {
-			'latitud':isp[u'flat_location'][0],
-			'longitud':isp[u'flat_location'][1],
-			'isp':isp[u'isp_name']
-		}
-		array.append(dict)
-	return array
-
-def getColorMarker(Markers):
 	dictionary = {}
-	i = 0
-	for marker in Markers:
-		if marker[u'isp_name'] not in dictionary:
-			dictionary[marker[u'isp_name']] = settings.COLORS[i]
-			i = i + 1
-	return dictionary
+	i = 1
+	isp_name = ''
+	for isp in Json:
+		isp_name = isp[u'isp_name'].lower() if not isp[u'isp_name'].islower() else isp[u'isp_name']
+		if isp_name != '' and isp_name != '-' and not hasNumbers(isp_name):
+			dict = {
+				'latitud': isp[u'flat_location'][0],
+				'longitud': isp[u'flat_location'][1],
+				'isp': isp_name
+			}
+			array.append(dict)
+			if isp_name not in dictionary:
+				dictionary[isp_name] = settings.STATIC_URL+"img/pin"+str(i)+".png"
+				i = i +1
+	return array,dictionary
 
 def getListClient(request):
 	auth_token = authenticateAPI()
@@ -166,8 +167,7 @@ def getListClient(request):
 			headers = {'x-access-token': auth_token}
 			r = requests.get(settings.URL_API + "/clientInfo/list",headers=headers)
 			responseJson = json.loads(r.text)
-			list = getIspPoints(responseJson)
-			leyenda = getColorMarker(responseJson)
+			list,leyenda = getIspPoints(responseJson)
 			return JsonResponse(dict(isp=list,leyenda=leyenda))
 		else:
 			return JsonResponse({'mensaje':'nada'})

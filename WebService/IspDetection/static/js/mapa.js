@@ -1,4 +1,4 @@
-var map_info, map_users;
+var map_info, map_users, rectangle;
 
 		  function shareContributionLink(lat,lon){
 				if(lat != null && lon != null && ispIP != "" && ispName != ""){
@@ -21,13 +21,15 @@ var map_info, map_users;
 					contentType:"text/plain",
 					success: function (data, status) {
 						let url = "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|";
+						console.log(data.leyenda);
+						console.log(data.isp);
 						if( $('#isp-markers ul').children().length <= 0 )
 						{
 							for(let marker in data.leyenda)
 							{
 								let j = marker.replace(/ /g, '');
 								$('#isp-markers ul').append("<li><i id='"+j+"'></i>  <span>"+marker+"</span></li>");
-								$("#isp-markers ul li i#" + j).css("content","url("+url+data.leyenda[marker]+")");
+								$("#isp-markers ul li i#" + j).css("content","url("+data.leyenda[marker]+")");
 							}
 						}
 						for(let index in data.isp)
@@ -36,15 +38,15 @@ var map_info, map_users;
 								lat:data.isp[index].latitud,
 								lng:data.isp[index].longitud
 							};
-							let pinImage =  new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + data.leyenda[data.isp[index].isp],
+							/*let pinImage =  new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + data.leyenda[data.isp[index].isp],
 											new google.maps.Size(21, 34),
 											new google.maps.Point(0,0),
-											new google.maps.Point(10, 34));
+											new google.maps.Point(10, 34));*/
 							markerIsp = new google.maps.Marker({
 								position: pos,
 								map: map_users,
 								draggable: false,
-								icon: pinImage
+								icon: data.leyenda[data.isp[index].isp]
 							});
 
 							(function(marker, ispName) {
@@ -114,6 +116,7 @@ var map_info, map_users;
 					});
 				marker.addListener('drag', handleEvent);
 				marker.addListener('dragend', handleEvent);
+
 			}else{
 				console.log("no ha aceptado la ubicacion");
 			}

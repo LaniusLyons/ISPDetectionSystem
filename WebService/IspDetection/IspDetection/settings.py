@@ -126,11 +126,11 @@ USE_L10N = True
 
 USE_TZ = False
 
-
-URL_API = 'http://localhost:3000'#'http://165.227.4.3:3000'
+#URL DEV
+#URL_API = 'http://localhost:3000'
 
 #URL PROD
-#URL_API = 'http://165.227.4.3:3000'
+URL_API = 'http://165.227.4.3:3000'
 
 
 # Static files (CSS, JavaScript, Images)
