@@ -26,6 +26,7 @@ SECRET_KEY = 'y04sps&l+7e%u0svsww+3kef+4a97*n7!s#^qh9s#5jty9#6ax'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
 ALLOWED_HOSTS = ['*']
 
 
@@ -142,30 +143,6 @@ STATICFILES_DIRS = [
 		os.path.join(BASE_DIR, 'static')
 ]
 
-COLORS = [
-	'0000FF',
-	'A52A2A',
-	'DEB887',
-	'5F9EA0',
-	'7FFF00',
-	'D2691E',
-	'FF7F50',
-	'6495ED',
-	'DC143C',
-	'000000',
-	'008B8B',
-	'006400',
-	'BDB76B',
-	'556B2F',
-	'FF8C00',
-	'9932CC',
-	'8B0000',
-	'483D8B',
-	'FF1493',
-	'228B22',
-	'FFD700'
-]
-
 LOGS_FOLDER = '/IspDetection/'
 
 
@@ -178,14 +155,14 @@ AUTHENTICATION_BACKENDS = (
 		'django.contrib.auth.backends.ModelBackend',
 	)
 
-LOGIN_URL = '/login/'
-LOGOUT_URL = '/logout/'
-LOGIN_REDIRECT_URL = '/login/'
+#LOGIN_URL = '/login/'
+#LOGOUT_URL = '/logout/'
+#LOGIN_REDIRECT_URL = '/login/'
 
 
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/login/'
-SOCIAL_AUTH_LOGIN_ERROR_URL = '/'
-SOCIAL_AUTH_RAISE_EXCEPTIONS = False
+#SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/login/'
+#SOCIAL_AUTH_LOGIN_ERROR_URL = '/'
+#SOCIAL_AUTH_RAISE_EXCEPTIONS = False
 SOCIAL_AUTH_FIELDS_STORED_IN_SESSION = ['coords','ispIP','ispName','ispUs']
 SOCIAL_AUTH_USER_MODEL = 'core.Collaborator'
 SOCIAL_AUTH_FACEBOOK_KEY = '839343722883925'

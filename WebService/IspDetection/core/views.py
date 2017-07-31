@@ -15,7 +15,7 @@ import urllib
 from django.http import JsonResponse
 import django_smtp_ssl
 from django.core.mail import EmailMultiAlternatives
-from django.template import Context
+from django.template import Context, loader
 from django.template.loader import get_template
 
 def send_email(email_to,subject,data):
@@ -70,7 +70,7 @@ def index(request,api_response=None):
 	list_client = None
 	ip = get_client_ip(request)
 	#delete next line for PROD Server
-	ip = ['186.3.146.133','200.126.1.143','103.11.228.8','10.10.10.32','170.120.34.65','192.168.0.100']
+	ip = ['103.11.228.8','200.126.1.143','186.3.146.133','10.10.10.32','170.120.34.65','192.168.0.100']
 	if isinstance(ip, list):
 		isp = [x for x in ip if validateIP(x)]
 		aux = getProvider(isp[0])
@@ -192,7 +192,7 @@ def logOutAPI():
 def postAPICollaborator(lat,lon,ispIP,ispName,auth_token,email=None,ispUs=None):
 	payload = {"email":email,
 				"isp_ip":ispIP,
-				"isp_name":ispName,
+				"isp_name":ispName.lower().capitalize(),
 				"isp_name_reported":ispUs,
 				"latitude":lat,
 				"longitude":lon}
@@ -210,6 +210,13 @@ def getProvider(providerIp):
 			r = requests.get(settings.URL_API + '/providers/',params=payload,headers=headers)
 			return r
 	return None
+
+
+def handlerError404(request):
+	return render(request, '404.html',status=404)
+
+def handlerError500(request):
+	return render(request, '500.html',status=500)
 
 
 

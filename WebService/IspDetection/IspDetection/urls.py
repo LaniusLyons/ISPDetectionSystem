@@ -16,9 +16,14 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.conf.urls import handler404, handler500
+from core import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 	url(r'^', include('core.urls')),
     url('', include('social_django.urls', namespace='social'))
 ]
+
+handler404 = views.handlerError404
+handler500 = views.handlerError500

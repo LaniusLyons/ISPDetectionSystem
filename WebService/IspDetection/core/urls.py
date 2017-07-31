@@ -13,3 +13,6 @@ urlpatterns = [
 	#url(r'^complete/facebook/$',views.index, name='index'),
 	 
 ]
+
+
+

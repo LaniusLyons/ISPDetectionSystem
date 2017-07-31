@@ -1,0 +1,36 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+		<title>{% block title %} IspFinderProject {% endblock %}</title>
+		<meta name="viewport"
+					content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/css/materialize.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/js/materialize.min.js"></script>
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+<div class="container-fluid">
+<div class="row">
+<div class="div col s8 offset-s2">
+	<div class="logo" style="margin-top: 20%;">
+		<div class="div col s6 offset-s3">
+        <img src="http://www.telsur.cl/modules/cotizador-mqh/images/error.svg" alt="" height="200px;" width="450px;">
+        </div>
+        <div style="clear: both;"></div>
+        <div class="div col s6 offset-s2">
+        <div class="progress">
+      		<div class="indeterminate"></div>
+  		</div>
+        <p class="center-align flow-text"> Ha ocurrido un error<br><a class="waves-effect waves-light btn" href="/">Volver</a></p>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</body>
+</html>
