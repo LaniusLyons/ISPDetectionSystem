@@ -1,4 +1,4 @@
-var map_info, map_users, rectangle;
+var map_info, map_users, markers;
 
 		  function shareContributionLink(lat,lon){
 				if(lat != null && lon != null && ispIP != "" && ispName != ""){
@@ -12,7 +12,6 @@ var map_info, map_users, rectangle;
 	   $('a[href="#mapa"]').click(function(e) {
 			var pos;
 			var markerIsp;
-			var info;
 
 			$.ajax({
 					type: "GET",
@@ -20,17 +19,28 @@ var map_info, map_users, rectangle;
 					dataType: "json",
 					contentType:"text/plain",
 					success: function (data, status) {
-						let url = "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|";
-						console.log(data.leyenda);
-						console.log(data.isp);
+						markers = [];
+						//console.log(data.leyenda);
+						//console.log(data.isp);
 						if( $('#isp-markers ul').children().length <= 0 )
 						{
+							$('#isp-markers ul').append("<li class='collection-item dismissable'><i></i><span>Todos</span></li>");
 							for(let marker in data.leyenda)
 							{
 								let j = marker.replace(/ /g, '');
-								$('#isp-markers ul').append("<li><i id='"+j+"'></i>  <span>"+marker+"</span></li>");
+								markers[marker] = new Array();
+								$('#isp-markers ul').append("<li class='collection-item dismissable'><i id='"+j+"'></i><span>"+marker+"</span></li>");
+								//$('#isp-markers ul').animate({scrollTop: $('#isp-markers ul').prop("scrollHeight")}, 400);
+
+								let styles = {
+								  cursor : "pointer"
+								  /*margin: "10px 0 10px 0"*/
+								};
+								$("#isp-markers ul li").css(styles);
 								$("#isp-markers ul li i#" + j).css("content","url("+data.leyenda[marker]+")");
 							}
+							/*let offset = $('#isp-markers ul li').first().position().top;
+							$('#isp-markers').scrollTop(500);*/
 						}
 						for(let index in data.isp)
 						{
@@ -38,17 +48,13 @@ var map_info, map_users, rectangle;
 								lat:data.isp[index].latitud,
 								lng:data.isp[index].longitud
 							};
-							/*let pinImage =  new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + data.leyenda[data.isp[index].isp],
-											new google.maps.Size(21, 34),
-											new google.maps.Point(0,0),
-											new google.maps.Point(10, 34));*/
 							markerIsp = new google.maps.Marker({
 								position: pos,
 								map: map_users,
 								draggable: false,
 								icon: data.leyenda[data.isp[index].isp]
 							});
-
+							markers[data.isp[index].isp].push(markerIsp);
 							(function(marker, ispName) {
 								// add click event
 								google.maps.event.addListener(marker, 'click', function() {
@@ -59,12 +65,50 @@ var map_info, map_users, rectangle;
 								});
 							})(markerIsp, data.isp[index].isp);
 						}
+						//console.log(markers);
 					},
 					error:function () {
 						console.log('Error');
 					}
 				});
 			setTimeout(initialise, 500);
+	   });
+
+	   function setMapOnAll(mapa)
+	   {
+
+	   }
+	   function ShowAndHideMarkers(isp_name , mapa = null)
+	   {//si mapa es null entonces hace un hide, else hace un show
+			let array_isp = markers[isp_name];
+			if(array_isp)
+			{
+				$.each(array_isp , function (k,v) {
+					v.setMap(mapa);
+				});
+			}else
+			{
+				console.log("no se encontro el index "+isp_name+" en markers");
+			}
+	   }
+
+	   $(document).on("touchstart click" , "#isp-markers ul li" , function () {
+			//console.log( $(this).children('span')[0].innerHTML );
+			let isp_name_selected = $(this).children('span')[0].innerHTML;
+			if(isp_name_selected === "Todos")
+			{
+				$("#isp-markers ul li").each(function (index,element) {
+					let isp_name = $(element)[0].innerText;
+					ShowAndHideMarkers(isp_name,map_users);
+				});
+			}else
+			{
+				$("#isp-markers ul li").each(function (index,element) {
+					let isp_name = $(element)[0].innerText;
+					if(isp_name_selected !== isp_name)
+						ShowAndHideMarkers(isp_name);
+				});
+			}
 	   });
 
 	   function initialise() {
@@ -83,7 +127,7 @@ var map_info, map_users, rectangle;
 
 	   function showMap(is_permite_ubicacion , position )
 	   {
-		   let latlng = is_permite_ubicacion ? new google.maps.LatLng( position.coords.latitude, position.coords.longitude ) : {lat: -2.1709978999999997, lng: -79.9223592};
+		   let latlng = is_permite_ubicacion ? new google.maps.LatLng( position.coords.latitude, position.coords.longitude ) : {lat: -2.172712, lng: -80.018234};
 		   let infoOptions = {
 			  zoom:14,
 			  disableDefaultUI: false,
@@ -92,11 +136,11 @@ var map_info, map_users, rectangle;
 			  streetViewControl: false
 		   };
 		   let myOptions = {
-			  zoom:14,
+			  zoom:12,
 			  disableDefaultUI: false,
 			  mapTypeControl: false,
-			  streetViewControl: false,
-			  center: latlng
+			  center: latlng,
+			   streetViewControl: false
 			};
 			map_info = new google.maps.Map(document.getElementById("map-info"), infoOptions);
 			map_info.mapTypes.set('styled_map', styledMap);
@@ -112,7 +156,7 @@ var map_info, map_users, rectangle;
 					position: latlng,
 					map: map_info,
 					draggable: true,
-					icon: url_marker
+					icon: "static/img/location.png"
 					});
 				marker.addListener('drag', handleEvent);
 				marker.addListener('dragend', handleEvent);

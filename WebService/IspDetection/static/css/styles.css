@@ -15,9 +15,16 @@
     flex: 1 1 20%;
     display: flex;
     justify-content: center;
-    height: 500px;
+    height: 400px;
     background-color: white;
+    overflow-y: auto;
 }
+
+
+/*#isp-markers ul{
+    max-height: 400px;
+    overflow-y: scroll;
+}*/
 
 .item-form{
     flex: 1 1 20%;
@@ -29,6 +36,10 @@
 
 .button-isp{
     margin: 4px 0 0 4px;
+}
+
+ul li span:hover{
+    cursor: pointer;
 }
 
 @media screen and (max-width: 600px) {

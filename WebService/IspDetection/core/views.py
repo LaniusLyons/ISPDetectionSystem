@@ -70,7 +70,7 @@ def index(request,api_response=None):
 	list_client = None
 	ip = get_client_ip(request)
 	#delete next line for PROD Server
-	ip = ['103.11.228.8','200.126.1.143','186.3.146.133','10.10.10.32','170.120.34.65','192.168.0.100']
+	ip = ['181.175.73.203','200.126.1.143','186.3.146.133','10.10.10.32','170.120.34.65','192.168.0.100']
 	if isinstance(ip, list):
 		isp = [x for x in ip if validateIP(x)]
 		aux = getProvider(isp[0])
