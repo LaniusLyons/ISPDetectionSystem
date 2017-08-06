@@ -88,7 +88,8 @@ var map_info, map_users, markers;
 	   }
 
 	   $(document).on("touchstart click" , "#isp-markers ul li" , function () {
-			//console.log( $(this).children('span')[0].innerHTML );
+			$('ul li').removeClass("active");
+			$(this).addClass("active");
 			let isp_name_selected = $(this).children('span')[0].innerHTML;
 			if(isp_name_selected === "Todos")
 			{
