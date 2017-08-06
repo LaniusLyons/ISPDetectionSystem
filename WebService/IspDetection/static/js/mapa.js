@@ -140,7 +140,7 @@ var map_info, map_users, markers;
 			  zoom:12,
 			  disableDefaultUI: false,
 			  mapTypeControl: false,
-			  center: latlng,
+			  center: {lat: -2.037534, lng: -80.082092},
 			   streetViewControl: false
 			};
 			map_info = new google.maps.Map(document.getElementById("map-info"), infoOptions);
