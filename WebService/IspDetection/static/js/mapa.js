@@ -29,7 +29,7 @@ var map_info, map_users, markers;
 					contentType:"text/plain",
 					success: function (data, status) {
 						markers = [];
-						$('#isp-markers ul').append("<li class='collection-item dismissable'><i></i><span>Todos</span></li>");
+						$('#isp-markers ul').append("<li class='collection-item dismissable active'><i></i><span>Todos</span></li>");
 						for(let marker in data.leyenda)
 						{
 							let j = marker.replace(/ /g, '');
