@@ -21,7 +21,7 @@ var map_info, map_users, markers;
 	   $('a[href="#mapa"]').click(function(e) {
 			var pos;
 			var markerIsp;
-
+            if( $('#isp-markers ul').children().length > 0 ) return;
 			$.ajax({
 					type: "GET",
 					url: "/getIsp/",
@@ -35,7 +35,6 @@ var map_info, map_users, markers;
 							let j = marker.replace(/ /g, '');
 							markers[marker] = new Array();
 							$('#isp-markers ul').append("<li class='collection-item dismissable'><i id='"+j+"'></i><span>"+marker+"</span></li>");
-							//$('#isp-markers ul').animate({scrollTop: $('#isp-markers ul').prop("scrollHeight")}, 400);
 
 							let styles = {
 							  cursor : "pointer"
@@ -67,7 +66,6 @@ var map_info, map_users, markers;
 								});
 							})(markerIsp, data.isp[index].isp);
 						}
-						//console.log(markers);
 					},
 					error:function () {
 						console.log('Error');
