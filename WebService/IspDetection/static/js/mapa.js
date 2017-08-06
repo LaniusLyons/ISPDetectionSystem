@@ -8,6 +8,15 @@ var map_info, map_users, markers;
 				}
 		  }
 
+	   $('a[href="#consultar"]').click(function(){
+	   		$('#isp-markers ul').empty();
+		    if(markers !== undefined){
+		    	for(let isp_name in markers ){
+					ShowAndHideMarkers(isp_name);
+				}
+				markers = [];
+			}
+	   });
 
 	   $('a[href="#mapa"]').click(function(e) {
 			var pos;
@@ -20,28 +29,21 @@ var map_info, map_users, markers;
 					contentType:"text/plain",
 					success: function (data, status) {
 						markers = [];
-						//console.log(data.leyenda);
-						//console.log(data.isp);
-						if( $('#isp-markers ul').children().length <= 0 )
+						$('#isp-markers ul').append("<li class='collection-item dismissable'><i></i><span>Todos</span></li>");
+						for(let marker in data.leyenda)
 						{
-							$('#isp-markers ul').append("<li class='collection-item dismissable'><i></i><span>Todos</span></li>");
-							for(let marker in data.leyenda)
-							{
-								let j = marker.replace(/ /g, '');
-								markers[marker] = new Array();
-								$('#isp-markers ul').append("<li class='collection-item dismissable'><i id='"+j+"'></i><span>"+marker+"</span></li>");
-								//$('#isp-markers ul').animate({scrollTop: $('#isp-markers ul').prop("scrollHeight")}, 400);
+							let j = marker.replace(/ /g, '');
+							markers[marker] = new Array();
+							$('#isp-markers ul').append("<li class='collection-item dismissable'><i id='"+j+"'></i><span>"+marker+"</span></li>");
+							//$('#isp-markers ul').animate({scrollTop: $('#isp-markers ul').prop("scrollHeight")}, 400);
 
-								let styles = {
-								  cursor : "pointer"
-								  /*margin: "10px 0 10px 0"*/
-								};
-								$("#isp-markers ul li").css(styles);
-								$("#isp-markers ul li i#" + j).css("content","url("+data.leyenda[marker]+")");
-							}
-							/*let offset = $('#isp-markers ul li').first().position().top;
-							$('#isp-markers').scrollTop(500);*/
+							let styles = {
+							  cursor : "pointer"
+							};
+							$("#isp-markers ul li").css(styles);
+							$("#isp-markers ul li i#" + j).css("content","url("+data.leyenda[marker]+")");
 						}
+
 						for(let index in data.isp)
 						{
 							pos = {
@@ -74,12 +76,9 @@ var map_info, map_users, markers;
 			setTimeout(initialise, 500);
 	   });
 
-	   function setMapOnAll(mapa)
-	   {
-
-	   }
 	   function ShowAndHideMarkers(isp_name , mapa = null)
 	   {//si mapa es null entonces hace un hide, else hace un show
+
 			let array_isp = markers[isp_name];
 			if(array_isp)
 			{
@@ -87,9 +86,7 @@ var map_info, map_users, markers;
 					v.setMap(mapa);
 				});
 			}else
-			{
 				console.log("no se encontro el index "+isp_name+" en markers");
-			}
 	   }
 
 	   $(document).on("touchstart click" , "#isp-markers ul li" , function () {
@@ -99,14 +96,19 @@ var map_info, map_users, markers;
 			{
 				$("#isp-markers ul li").each(function (index,element) {
 					let isp_name = $(element)[0].innerText;
-					ShowAndHideMarkers(isp_name,map_users);
+					if(isp_name !== "Todos")
+						ShowAndHideMarkers(isp_name,map_users);
 				});
 			}else
 			{
 				$("#isp-markers ul li").each(function (index,element) {
 					let isp_name = $(element)[0].innerText;
-					if(isp_name_selected !== isp_name)
-						ShowAndHideMarkers(isp_name);
+					if(isp_name !== "Todos"){
+						if(isp_name_selected === isp_name)
+							ShowAndHideMarkers(isp_name_selected,map_users);
+						else
+							ShowAndHideMarkers(isp_name);
+					}
 				});
 			}
 	   });
@@ -207,7 +209,6 @@ var map_info, map_users, markers;
 			   navigator.geolocation.getCurrentPosition(showPosition,showError);
 			} else
 			{
-			   // Browser doesn't support Geolocation
 			   console.log("Browser doesn't support Geolocation");
 			}
 	  }

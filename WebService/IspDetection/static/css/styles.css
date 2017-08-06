@@ -15,7 +15,7 @@
     flex: 1 1 20%;
     display: flex;
     justify-content: center;
-    height: 400px;
+    height: 500px;
     background-color: white;
     overflow-y: auto;
 }
