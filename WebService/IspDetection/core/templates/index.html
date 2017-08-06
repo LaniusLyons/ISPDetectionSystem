@@ -59,7 +59,7 @@
 															 <div class="text-center" id="map-users" style="width:100%;height:500px;"></div>
 											   </div>
 											   <div id="isp-markers" class="z-depth-4">
-												   <ul></ul>
+												   <ul class="collection" style="overflow: auto;"></ul>
 											   </div>
 										 </div>
 					</div>
@@ -79,7 +79,6 @@
 		{% include 'modal.html' %}
 </div>
 <script type="application/javascript">
-		var url_marker = "{% static 'img/location.png' %}";
 		var is_compartir_facebook = "{{ response }}";
 		var toast_message;
 		var showToastMessage;
