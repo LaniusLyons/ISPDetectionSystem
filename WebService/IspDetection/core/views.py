@@ -18,6 +18,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.template import Context, loader
 from django.template.loader import get_template
 
+
 def send_email(email_to,subject,data):
 	print 'enviando'
 	from_email = 'IspFinderProject <'+settings.DEFAULT_FROM_EMAIL+'>'

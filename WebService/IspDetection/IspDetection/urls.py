@@ -22,7 +22,7 @@ from core import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 	url(r'^', include('core.urls')),
-    url('', include('social_django.urls', namespace='social'))
+    #url('', include('social_django.urls', namespace='social'))
 ]
 
 handler404 = views.handlerError404
