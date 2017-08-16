@@ -71,7 +71,7 @@ def index(request,api_response=None):
 	from mongoengine import connect
 	from .mongodb import OrganizationProvider
 	connect('network_info_db')
-
+	ispInfo = None
 	list_client = None
 	ip = get_client_ip(request)
 	#delete next line for PROD Server
@@ -79,10 +79,11 @@ def index(request,api_response=None):
 	if isinstance(ip, list):
 		isp = [x for x in ip if validateIP(x)]
 		aux = getProvider(isp[0])
-		auxName = (aux.json())['isp']
-		auxOrg = OrganizationProvider.objects(organization_name=auxName).first()
-		ispInfo = aux.json()
-		ispInfo['isp'] = auxOrg.isp_name
+		if aux:
+			auxName = (aux.json())['isp']
+			auxOrg = OrganizationProvider.objects(organization_name=auxName).first()
+			ispInfo = aux.json()
+			ispInfo['isp'] = auxOrg.isp_name
 
 	return render(request,'index.html',{'ispInfo':ispInfo,'ispIp':isp[0], 'response':switch(api_response)})
 
@@ -200,11 +201,7 @@ def getListClient(request):
 
 
 def authenticateAPI():
-	payload = {
-		"user_name":"user_django",
-		"password":"123456"
-	}
-	r = requests.post(settings.URL_API+'/authenticate' , data=payload )
+	r = requests.post(settings.URL_API+'/authenticate' , data=credentialsPayload )
 	if r.status_code == 200:
 		return r.json()['token']
 	return None

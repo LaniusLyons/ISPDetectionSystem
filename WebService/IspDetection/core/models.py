@@ -4,10 +4,21 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.db import models
+from django.conf import settings
 import hashlib
 import random
 import string
 import time
+
+
+def loadCredentials():
+	import json
+	import os
+	with open(settings.BASE_DIR + settings.LOGS_FOLDER + 'credentials.json', 'rb') as data_file:
+		data = json.loads(data_file.read())
+		return data
+
+credentialsPayload = loadCredentials()
 
 
 
