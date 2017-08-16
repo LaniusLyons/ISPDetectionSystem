@@ -28,7 +28,8 @@ def save_organization(sender, instance, **kwargs):
 	from mongoengine import connect
 	from .mongodb import OrganizationProvider
 	connect('network_info_db')
-	entry = OrganizationProvider(isp_name=instance.fk_provider.name, organization_name=instance.name).save()
+	if kwargs['created']:
+		entry = OrganizationProvider(isp_name=instance.fk_provider.name, organization_name=instance.name).save()
 
 
 # Create your models here.

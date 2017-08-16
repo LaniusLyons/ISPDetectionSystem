@@ -68,15 +68,23 @@ def get_client_ip(request):
 
 
 def index(request,api_response=None):
+	from mongoengine import connect
+	from .mongodb import OrganizationProvider
+	connect('network_info_db')
+
 	list_client = None
 	ip = get_client_ip(request)
 	#delete next line for PROD Server
-	ip = ['181.175.73.203','200.126.1.143','186.3.146.133','10.10.10.32','170.120.34.65','192.168.0.100']
+	ip = ['190.63.150.18','181.175.73.203','200.126.1.143','186.3.146.133','10.10.10.32','170.120.34.65','192.168.0.100']
 	if isinstance(ip, list):
 		isp = [x for x in ip if validateIP(x)]
 		aux = getProvider(isp[0])
+		auxName = (aux.json())['isp']
+		auxOrg = OrganizationProvider.objects(organization_name=auxName).first()
+		ispInfo = aux.json()
+		ispInfo['isp'] = auxOrg.isp_name
 
-	return render(request,'index.html',{'ispInfo':aux.json(),'ispIp':isp[0], 'response':switch(api_response)})
+	return render(request,'index.html',{'ispInfo':ispInfo,'ispIp':isp[0], 'response':switch(api_response)})
 
 
 def switch(argument):
@@ -98,20 +106,24 @@ def logs(request):
 def login(request):
 	response = None
 	if request.user.is_authenticated():
-		coords = request.session['coords'].split(',')
-		lat = coords[1]
-		lon = coords[0]
-		ispIP = request.session['ispIP']
-		ispName = request.session['ispName']
-		ispUs = None
-		if 'ispUs' in request.session:
-			ispUs = request.session['ispUs']
+		try:
+			coords = request.session['coords'].split(',')
+			lat = coords[1]
+			lon = coords[0]
+			ispIP = request.session['ispIP']
+			ispName = request.session['ispName']
+			ispUs = None
+			if 'ispUs' in request.session:
+				ispUs = request.session['ispUs']
 
-		auth_token = authenticateAPI()
-		if lat and lon and ispIP and ispName and auth_token:
-			response = postAPICollaborator(lat,lon,ispIP,ispName,auth_token,request.user.email,ispUs)
-		else:
-			response = 400
+			auth_token = authenticateAPI()
+			if lat and lon and ispIP and ispName and auth_token:
+				response = postAPICollaborator(lat,lon,ispIP,ispName,auth_token,request.user.email,ispUs)
+			else:
+				response = 400
+		except Exception as e:
+			return redirect('/')
+
 	else:
 		coords = request.GET.get('coords',None).split(',')
 		lat = coords[1]
@@ -139,27 +151,40 @@ def log_out(request, api_response):
 	logout(request)
 	return HttpResponseRedirect('/' + api_response)
 
+
 def hasNumbers(String):
 	return any( char.isdigit() for char in String )
 
+
 def getIspPoints(Json):
+	from mongoengine import connect
+	from .mongodb import OrganizationProvider
+	connect('network_info_db')
+
 	array = []
 	dictionary = {}
 	i = 1
 	isp_name = ''
 	for isp in Json:
+		auxName = isp[u'isp_name']
 		isp_name = isp[u'isp_name'].lower() if not isp[u'isp_name'].islower() else isp[u'isp_name']
 		if isp_name != '' and isp_name != '-' and not hasNumbers(isp_name):
+
+			auxISP = OrganizationProvider.objects(organization_name=auxName).first()
 			dict = {
 				'latitud': isp[u'flat_location'][0],
 				'longitud': isp[u'flat_location'][1],
-				'isp': isp_name
+				'isp': auxISP.isp_name.lower() if auxISP else isp_name
 			}
 			array.append(dict)
 			if isp_name not in dictionary:
-				dictionary[isp_name] = settings.STATIC_URL+"img/pin"+str(i)+".png"
+				if auxISP:
+					dictionary[auxISP.isp_name.lower()] = settings.STATIC_URL+"img/pin"+str(i)+".png"
+				else:
+					dictionary[isp_name] = settings.STATIC_URL+"img/pin"+str(i)+".png"
 				i = i +1
 	return array,dictionary
+
 
 def getListClient(request):
 	auth_token = authenticateAPI()
