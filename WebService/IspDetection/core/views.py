@@ -83,7 +83,8 @@ def index(request,api_response=None):
 			auxName = (aux.json())['isp']
 			auxOrg = OrganizationProvider.objects(organization_name=auxName).first()
 			ispInfo = aux.json()
-			ispInfo['isp'] = auxOrg.isp_name
+			if auxOrg:
+				ispInfo['isp'] = auxOrg.isp_name
 
 	return render(request,'index.html',{'ispInfo':ispInfo,'ispIp':isp[0], 'response':switch(api_response)})
 
