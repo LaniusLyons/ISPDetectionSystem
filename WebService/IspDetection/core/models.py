@@ -40,7 +40,13 @@ def save_organization(sender, instance, **kwargs):
 	from .mongodb import OrganizationProvider
 	connect('network_info_db')
 	if kwargs['created']:
-		entry = OrganizationProvider(isp_name=instance.fk_provider.name, organization_name=instance.name).save()
+		print 'created'
+		entry = OrganizationProvider(isp_name=instance.fk_provider.name, organization_name=instance.name,_id=instance.pk).save()
+	else:
+		print 'edited'
+		entry = OrganizationProvider.objects(_id=instance.pk).update(isp_name=instance.fk_provider.name, organization_name=instance.name)
+		print entry
+
 
 
 # Create your models here.
