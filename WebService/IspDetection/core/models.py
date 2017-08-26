@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 from django.db import models
 from django.conf import settings
 import hashlib
@@ -40,7 +40,16 @@ def save_organization(sender, instance, **kwargs):
 	from .mongodb import OrganizationProvider
 	connect('network_info_db')
 	if kwargs['created']:
-		entry = OrganizationProvider(isp_name=instance.fk_provider.name, organization_name=instance.name).save()
+		entry = OrganizationProvider(isp_name=instance.fk_provider.name, organization_name=instance.name,_id=instance.pk).save()
+	else:
+		entry = OrganizationProvider.objects(_id=instance.pk).update(isp_name=instance.fk_provider.name, organization_name=instance.name)
+
+
+def delete_organization(sender, instance, **kwargs):
+	from mongoengine import connect
+	from .mongodb import OrganizationProvider
+	connect('network_info_db')
+	OrganizationProvider.objects(_id=instance.pk).delete()
 
 
 # Create your models here.
@@ -72,6 +81,8 @@ class Organization(models.Model):
 		return self.name
 
 post_save.connect(save_organization, sender=Organization)
+
+post_delete.connect(delete_organization, sender=Organization)
 
 
 # class IP_Provider(models.Model):
