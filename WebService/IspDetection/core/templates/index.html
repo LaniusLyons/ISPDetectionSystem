@@ -10,8 +10,11 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/css/materialize.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/js/materialize.min.js"></script>
+        <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.8/sweetalert2.min.js"></script>
 		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBoCFo1k9vfgpXqZWolbWtMU3dWdSRdCQM&amp;libraries=places,geometry&amp;region=ec&amp;language=es"></script>
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.8/sweetalert2.min.css">
 		<link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
@@ -124,6 +127,7 @@
 
 
 	$(document).ready(function(){
+
 		$("#shareBtnWithEmail").click(function(){
 			var email = $("#email").val();
 			if($("#email").is(':valid')){
@@ -136,8 +140,6 @@
 			}else{
 				$("#errorMessage").html("Invalido");
 			}
-
-
 		});
 
 		$("#shareBtnWithNoEmail").click(function(){

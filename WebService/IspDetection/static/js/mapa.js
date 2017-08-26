@@ -1,4 +1,11 @@
 var map_info, map_users, markers;
+var navigators = {
+  "Chrome": 50,
+  "Firefox": 35,
+  "MSIE": 9,
+  "Opera": 10.6,
+  "Safari": 5
+};
 
 		  function shareContributionLink(lat,lon){
 				if(lat != null && lon != null && ispIP != "" && ispName != ""){
@@ -9,9 +16,9 @@ var map_info, map_users, markers;
 		  }
 
 	   $('a[href="#consultar"]').click(function(){
-	   		$('#isp-markers ul').empty();
-		    if(markers !== undefined){
-		    	for(let isp_name in markers ){
+			$('#isp-markers ul').empty();
+			if(markers !== undefined){
+				for(let isp_name in markers ){
 					ShowAndHideMarkers(isp_name);
 				}
 				markers = [];
@@ -21,7 +28,7 @@ var map_info, map_users, markers;
 	   $('a[href="#mapa"]').click(function(e) {
 			var pos;
 			var markerIsp;
-            if( $('#isp-markers ul').children().length > 0 ) return;
+			if( $('#isp-markers ul').children().length > 0 ) return;
 			$.ajax({
 					type: "GET",
 					url: "/getIsp/",
@@ -185,13 +192,16 @@ var map_info, map_users, markers;
 					$('#compartir-facebook').css("display","none");
 					break;
 				case error.POSITION_UNAVAILABLE:
-					alert("Informacion de localizacion no disponible");
+					swal('Error','Se recomienda utilziar el navegador de Google Chrome','info');
+					//alert("Informacion de localizacion no disponible");
 					break;
 				case error.TIMEOUT:
-					alert("Tiempo de espera expirado");
+					swal('','iempo de espera expirado','info');
+					//alert("Tiempo de espera expirado");
 					break;
 				case error.UNKNOWN_ERROR:
-					alert("ERROR DESCONOCIDO");
+					swal('','Error desconocido, contacte con el administrador','info');
+					//alert("ERROR DESCONOCIDO");
 					break;
 			}
 	  }
@@ -201,8 +211,91 @@ var map_info, map_users, markers;
 		  showMap(true , position);
 	  }
 
+	  function loadJSON(file, callback) {
+			var xobj = new XMLHttpRequest();
+			xobj.overrideMimeType("application/json");
+			xobj.open('GET', file, true); // Replace 'my_data' with the path to your file
+			xobj.onreadystatechange = function () {
+				  if (xobj.readyState == 4 && xobj.status == "200") {
+					// Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
+					callback(xobj.responseText);
+				  }
+			};
+			xobj.send(null);
+	  }
+
+	  function detectarBrowser(){
+			let nAgt = navigator.userAgent;
+			let browserName  = navigator.appName;
+			let fullVersion  = ''+parseFloat(navigator.appVersion);
+			let majorVersion = parseInt(navigator.appVersion,10);
+			let nameOffset,verOffset,ix;
+
+			// In Opera 15+, the true version is after "OPR/"
+			if ((verOffset=nAgt.indexOf("OPR/"))!=-1) {
+			 browserName = "Opera";
+			 fullVersion = nAgt.substring(verOffset+4);
+			}
+			// In older Opera, the true version is after "Opera" or after "Version"
+			else if ((verOffset=nAgt.indexOf("Opera"))!=-1) {
+			 browserName = "Opera";
+			 fullVersion = nAgt.substring(verOffset+6);
+			 if ((verOffset=nAgt.indexOf("Version"))!=-1)
+			   fullVersion = nAgt.substring(verOffset+8);
+			}
+			// In MSIE, the true version is after "MSIE" in userAgent
+			else if ((verOffset=nAgt.indexOf("MSIE"))!=-1) {
+			 browserName = "Microsoft Internet Explorer";
+			 fullVersion = nAgt.substring(verOffset+5);
+			}
+			// In Chrome, the true version is after "Chrome"
+			else if ((verOffset=nAgt.indexOf("Chrome"))!=-1) {
+			 browserName = "Chrome";
+			 fullVersion = nAgt.substring(verOffset+7);
+			}
+			// In Safari, the true version is after "Safari" or after "Version"
+			else if ((verOffset=nAgt.indexOf("Safari"))!=-1) {
+			 browserName = "Safari";
+			 fullVersion = nAgt.substring(verOffset+7);
+			 if ((verOffset=nAgt.indexOf("Version"))!=-1)
+			   fullVersion = nAgt.substring(verOffset+8);
+			}
+			// In Firefox, the true version is after "Firefox"
+			else if ((verOffset=nAgt.indexOf("Firefox"))!=-1) {
+			 browserName = "Firefox";
+			 fullVersion = nAgt.substring(verOffset+8);
+			}
+			// In most other browsers, "name/version" is at the end of userAgent
+			else if ( (nameOffset=nAgt.lastIndexOf(' ')+1) <
+					  (verOffset=nAgt.lastIndexOf('/')) )
+			{
+			 browserName = nAgt.substring(nameOffset,verOffset);
+			 fullVersion = nAgt.substring(verOffset+1);
+			 if (browserName.toLowerCase()==browserName.toUpperCase()) {
+			  browserName = navigator.appName;
+			 }
+			}
+			// trim the fullVersion string at semicolon/space if present
+			if ((ix=fullVersion.indexOf(";"))!=-1)
+			   fullVersion=fullVersion.substring(0,ix);
+			if ((ix=fullVersion.indexOf(" "))!=-1)
+			   fullVersion=fullVersion.substring(0,ix);
+
+			majorVersion = parseInt(''+fullVersion,10);
+			if (isNaN(majorVersion)) {
+			 fullVersion  = ''+parseFloat(navigator.appVersion);
+			 majorVersion = parseInt(navigator.appVersion,10);
+			}
+			let version = Number(navigators[browserName]);
+			if( fullVersion < version )
+			{
+				swal('Error','Actualiza el navegador a una version nueva...','info');
+			}
+	  }
+
 	  function initMap()
 	  {
+			detectarBrowser();
 			if (navigator.geolocation)
 			{
 			   navigator.geolocation.getCurrentPosition(showPosition,showError);

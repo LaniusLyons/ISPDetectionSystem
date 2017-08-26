@@ -1,68 +1,70 @@
 <style type="text/css">
   .input-field input[type=text]:focus {
-    border-bottom: 5px solid #fff;
-    box-shadow: 0 5px 0 0 #fff;
+	border-bottom: 5px solid #fff;
+	box-shadow: 0 5px 0 0 #fff;
   }
 </style>
 <div class="container">
-    <div class="row">
-        <div class="col s12 m6">
-              <div class="text-center" id="map-info" style="width:100%;height:360px;"></div>
-        </div>
-        <div class="col s12 m6">
-              <div class="card light-blue lighten-3" style="margin-top: 0px">
-                    <div class="card-content black-text">
-                         <span class="card-title" style="font-family: 'Arial Black';"><h5>Red WiFi Local</h5></span>
-                         <p class="flow-text">Proveedor: {{ ispInfo.isp|default:'TU Proveedor'}}</p>
-                         <p class="flow-text">IP: {{ ispIp|default:'Desconocido'}}</p>
-                         <p class="flow-text">Pa&iacute;s: {{ ispInfo.country|default:'Desconocido'}}</p>
-                         <p class="flow-text">Ciudad: {{ ispInfo.city|default:'Desconocido'}}</p>
-                         <!--<p class="flow-text">latitud/longitud: {{ ispInfo.lat|default:'Desconocido'}} / {{ ispInfo.lon|default:'Desconocido'}}</p>-->
-                    </div>
-                    <div class="card-content black-text">
-                      <p class="flow-text" style="font-size: 125%;">
-                        <i><strong>¿No es tu proveedor de internet? <br> Escribenos cual es tu proveedor y comparte.</strong></i> 
-                      </p>
+	<div class="row">
+		<div class="col s12 m6">
+			  <div class="text-center" id="map-info" style="width:100%;height:360px;"></div>
+		</div>
+		<div class="col s12 m6">
+			  <div class="card light-blue lighten-3" style="margin-top: 0px">
+					<div class="card-content black-text">
+						 <span class="card-title" style="font-family: 'Arial Black';"><h5>Red WiFi Local</h5></span>
+						 <p class="flow-text">Proveedor: {{ ispInfo.isp|default:'TU Proveedor'}}</p>
+						 <p class="flow-text">IP: {{ ispIp|default:'Desconocido'}}</p>
+						 <p class="flow-text">Pa&iacute;s: {{ ispInfo.country|default:'Desconocido'}}</p>
+						 <p class="flow-text">Ciudad: {{ ispInfo.city|default:'Desconocido'}}</p>
+						 <!--<p class="flow-text">latitud/longitud: {{ ispInfo.lat|default:'Desconocido'}} / {{ ispInfo.lon|default:'Desconocido'}}</p>-->
+					</div>
+					<div class="card-content black-text">
+					  <p class="flow-text" style="font-size: 125%;">
+                          <i>¿No es tu proveedor de internet?<br></i>
+						<!--<i><strong>¿No es tu proveedor de internet? <br> Escribenos cual es tu proveedor y comparte.</strong></i>-->
+					  </p>
 
-                      <div class="row">
-                        <div class="input-field col s6">
-                          <input id="isp_reported" type="text" placeholder="" maxlength="15" size="15">
-                        </div>
-                      </div>
-                    </div>
+					  <div class="row">
+						<div class="input-field col s10">
+						  <label for="isp_reported"><strong>Escribe AQUÍ tu proveedor...</strong></label>
+						  <input id="isp_reported" type="text" maxlength="15" size="15">
+						</div>
+					  </div>
+					</div>
 
-                    <!--<div class="card-action">
-                        <input type="hidden" name="shareLink" id="shareLink">
-                        <a class="waves-effect waves-light btn-large yellow-text" id="shareBtn">Enviar con Facebook</a>
-                    </div>-->
+					<!--<div class="card-action">
+						<input type="hidden" name="shareLink" id="shareLink">
+						<a class="waves-effect waves-light btn-large yellow-text" id="shareBtn">Enviar con Facebook</a>
+					</div>-->
 
-                    <div class="card-action">
-                        
-                      <ul class="collapsible" data-collapsible="accordion">
-                        <li>
-                          <div class="collapsible-header teal lighten-1"><a class="yellow-text">Compartir con email</a></div>
-                          <div class="collapsible-body white">
-                                <div class="row">
-                                  <div class="col s12">
-                                    <div class="input-field inline">
-                                      <input id="email" type="email" name="email" maxlength="75">
-                                      <label for="email">Email</label>
-                                      <p id="errorMessage" class="red-text"></p>
-                                      <a class="btn waves-effect waves-light" id="shareBtnWithEmail"><i class="material-icons right">send</i>Enviar</a>
-                                    </div>
-                                  </div>
-                                </div>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="collapsible-header teal lighten-1"><a class="yellow-text" id="shareBtnWithNoEmail">Compartir de forma An&oacute;nima</a></div>
-                        </li>
-                      </ul>
+					<div class="card-action">
 
-                    </div>
-                  <!-- <br>
-                       <div class="fb-login-button" data-max-rows="1" data-size="medium" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false" onclick=""></div> -->
-              </div>
-        </div>
-    </div>
+					  <ul class="collapsible" data-collapsible="accordion">
+						<li>
+						  <div class="collapsible-header teal lighten-1"><a class="yellow-text">Compartir con email</a></div>
+						  <div class="collapsible-body white">
+								<div class="row">
+								  <div class="col s12">
+									<div class="input-field inline">
+									  <input id="email" type="email" name="email" maxlength="75">
+									  <label for="email">Email</label>
+									  <p id="errorMessage" class="red-text"></p>
+									  <a class="btn waves-effect waves-light" id="shareBtnWithEmail"><i class="material-icons right">send</i>Enviar</a>
+									</div>
+								  </div>
+								</div>
+						  </div>
+						</li>
+						<li>
+						  <div class="collapsible-header teal lighten-1"><a class="yellow-text" id="shareBtnWithNoEmail">Compartir de forma An&oacute;nima</a></div>
+						</li>
+					  </ul>
+
+					</div>
+				  <!-- <br>
+					   <div class="fb-login-button" data-max-rows="1" data-size="medium" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false" onclick=""></div> -->
+			  </div>
+		</div>
+	</div>
 </div>
