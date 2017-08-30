@@ -39,7 +39,7 @@ var navigators = {
 						$('#isp-markers ul').append("<li class='collection-item dismissable active'><i></i><span>Todos</span></li>");
 						for(let marker in data.leyenda)
 						{
-							let j = marker.replace(/ /g, '');
+							let j = marker.replace(/ /g, '').replace(/[&\/\\#,+()$~%\.'":*?<>{}]/g,'');
 							markers[marker] = new Array();
 							$('#isp-markers ul').append("<li class='collection-item dismissable'><i id='"+j+"'></i><span>"+marker+"</span></li>");
 
